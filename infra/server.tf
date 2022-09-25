@@ -12,10 +12,6 @@ variable "server_domain_zone" {
   type = string
 }
 
-variable "server_domain_zone" {
-  type = string
-}
-
 variable "server_domain_name" {
   type = string
 }
