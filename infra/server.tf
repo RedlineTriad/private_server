@@ -1,25 +1,6 @@
-variable "hcloud_token" {
-  type = string
-  sensitive = true
-}
-
-variable "cloudflare_api_token" {
-  type = string
-  sensitive = true
-}
-
-variable "server_domain_zone" {
-  type = string
-}
-
-variable "server_domain_name" {
-  type = string
-}
-
 provider "hcloud" {
   token = var.hcloud_token
 }
-
 provider "cloudflare" {
   api_token = var.cloudflare_api_token
 }
@@ -37,7 +18,7 @@ resource "hcloud_server" "web" {
 resource "cloudflare_zone" "personal_domain" {
   zone = var.server_domain_zone
   lifecycle {
-      prevent_destroy = true
+    prevent_destroy = true
   }
 }
 
