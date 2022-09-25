@@ -1,0 +1,14 @@
+---
+dependency:
+  name: galaxy
+driver:
+  name: docker
+platforms:
+  - name: instance
+    image: solita/ubuntu-systemd
+    command: /sbin/init
+    privileged: true
+provisioner:
+  name: ansible
+verifier:
+  name: ansible
