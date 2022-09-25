@@ -44,8 +44,9 @@ jobs:
         id: plan
         run: terraform plan -no-color
         env:
-          TF_VAR_hcloud_token: ${{ secrets.TF_VAR_HCLOUD_TOKEN }}
-          TF_VAR_cloudflare_api_token: ${{ secrets.TF_VAR_CLOUDFLARE_API_TOKEN }}
+          TF_VAR_hcloud_token: ${{ secrets.TF_VAR_hcloud_token }}
+          TF_VAR_cloudflare_api_token: ${{ secrets.TF_VAR_cloudflare_api_token }}
+          TF_VAR_server_domain_zone: ${{ secrets.TF_VAR_server_domain_zone }}
         continue-on-error: true
           
       - uses: actions/github-script@v6
