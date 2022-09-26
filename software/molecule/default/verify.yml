@@ -5,6 +5,10 @@
   hosts: all
   gather_facts: false
   tasks:
-  - name: Example assertion
+  - name: Get Docker Version
+    ansible.builtin.command: docker -v
+    register: docker_version
+  
+  - name: Verify Docker Version
     ansible.builtin.assert:
-      that: true
+      that: '"version 20" in docker_version.stdout'
