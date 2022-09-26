@@ -2,4 +2,4 @@
 - name: Converge
   hosts: all
 
-- import_playbook: ../../playbooks/install_docker/main.yml
+- import_playbook: ../../playbooks/all.yml

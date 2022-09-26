@@ -5,10 +5,10 @@ driver:
   name: docker
 platforms:
   - name: instance
-    image: solita/ubuntu-systemd
-    command: /sbin/init
-    privileged: true
+    image: debian:10
 provisioner:
   name: ansible
+  env:
+    ANSIBLE_ROLES_PATH: "../../roles"
 verifier:
   name: ansible
