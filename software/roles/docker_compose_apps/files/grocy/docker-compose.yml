@@ -1,0 +1,30 @@
+---
+version: '2.4'
+
+services:
+
+  frontend:
+    image: "grocy/frontend:v3.3.1"
+    read_only: true
+    tmpfs:
+      - /tmp
+    volumes:
+      - /var/log/grocy/nginx:/var/log/var/log/nginx
+
+  backend:
+    image: "grocy/backend:v3.3.1"
+    read_only: true
+    tmpfs:
+      - /tmp
+    volumes:
+      - /var/log/grocy/php:/var/log/php8
+      - app-db:/var/www/data
+    env_file:
+      - grocy.env
+
+volumes:
+  app-db:
+
+networks:
+  rproxy:
+    external: true

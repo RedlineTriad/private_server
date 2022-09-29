@@ -1,5 +1,6 @@
 ---
-- name: Install Docker
+- name: Setup Server
   hosts: all
   roles:
-   - install_docker
+   - docker
+   - docker_compose_apps
