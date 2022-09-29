@@ -1,0 +1,5 @@
+localhost {
+	reverse_proxy /grocy/* grocy:8080
+	
+	respond "Hello, world!"
+}

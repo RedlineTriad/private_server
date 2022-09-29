@@ -1,0 +1,5 @@
+---
+- name: Copy docker-compose applications to target
+  ansible.builtin.copy:
+    src: "."
+    dest: "/srv/"
