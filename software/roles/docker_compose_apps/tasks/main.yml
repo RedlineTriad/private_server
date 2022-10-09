@@ -3,3 +3,19 @@
   ansible.builtin.copy:
     src: "."
     dest: "/srv/"
+
+- name: Get All docker compose Services
+  ansible.builtin.find:
+    paths: /srv
+    patterns: docker-compose.yml
+    recurse: yes
+    depth: 2
+  register: find
+
+- name: Start docker-compose services
+  ansible.builtin.command:
+    cmd: docker compose up -d
+    chdir: "/srv/{{ service }}"
+  vars:
+    service: "{{ item.path | dirname | basename }}"
+  loop: "{{ find.files }}"
