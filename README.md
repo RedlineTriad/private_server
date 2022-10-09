@@ -2,7 +2,7 @@ My entire private server as code including testing
 
 ```mermaid
 C4Context
-title System Context diagram for my Private Server
+title System Context Diagram for my Private Server
 
 Person(developer, "Redline", "A Developer with Yak Shaving Syndrome.")
 System(hetzner, "Hetzner", "German Cloud Provider.")
@@ -21,4 +21,29 @@ Rel(porkbun, cloudflare, "Specifies Authoritative Domain Server")
 Rel(cloudflare, server, "Tell client to connect to")
 
 Rel(developer, github, "Changes.")
+```
+
+```mermaid
+C4Container
+title Container Diagram for my Private Server
+
+Person(developer, "Redline", "A Developer with Yak Shaving Syndrome.")
+
+
+System_Boundary(server, "Private Server") {
+    System(caddy, "Caddy", "Reverse Proxy.")
+    System(grocy, "Grocy", "And ERP for your Fridge.")
+    System(valetudo, "Valetudo", "Open-Source Robovacuum Server.")
+    System(paperlessngx, "PaperlessNGX", "Document Scanning/Storage/Indexing.")
+    System(homeassistant, "Home Assistant", "Smart Home Server.")
+
+    Rel(caddy, grocy, "http")
+    Rel(caddy, valetudo, "http")
+    Rel(caddy, paperlessngx, "http")
+    Rel(caddy, homeassistant, "http")
+
+    Rel(homeassistant, valetudo, "controls")
+}
+
+Rel(developer, caddy, "http")
 ```
