@@ -1,3 +1,12 @@
+terraform {
+  cloud {
+    organization = "redline"
+    workspaces {
+      name = "private_server"
+    }
+  }
+}
+
 provider "hcloud" {
   token = var.hcloud_token
 }
