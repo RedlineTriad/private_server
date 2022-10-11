@@ -2,5 +2,6 @@
 - name: Setup Server
   hosts: all
   roles:
-   - docker
-   - docker_compose_apps
+    - docker
+    - docker_compose_apps
+  become: true
