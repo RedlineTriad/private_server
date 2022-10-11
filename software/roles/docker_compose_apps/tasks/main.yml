@@ -18,4 +18,6 @@
     chdir: "/srv/{{ service }}"
   vars:
     service: "{{ item.path | dirname | basename }}"
+  changed_when: "'done' in compose.stdout"
+  register: compose
   loop: "{{ find.files }}"
