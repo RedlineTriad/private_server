@@ -8,15 +8,13 @@ driver:
 platforms:
   - name: instance
     box: debian/buster64
-    memory: 2048
-    cpus: 2
+    provider_options:
+      qemu_dir: /usr/bin/
+      arch: x86_64
+      machine: q35
+      cpu: max
+      net_device: virtio-net-pci
     provider_raw_config_args:
-      - qemu_dir = "/usr/bin/"
-      - arch="x86_64"
-      - machine = "q35"
-      - cpu = "max"
-      - net_device = "virtio-net-pci"
-      #- extra_qemu_args = %w(-vga std -accel tcg)
       - extra_qemu_args = %w(-vga std)
 provisioner:
   name: ansible
