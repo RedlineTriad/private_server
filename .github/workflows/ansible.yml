@@ -14,7 +14,16 @@ jobs:
         shell: bash
     steps:
       - uses: actions/checkout@v2
-      - uses: redlinetriad/molecule-vagrant-qemu-action@v1
-        with:
-          molecule_working_dir: software
+      - name: Test Molecule default pipeline
+        env:
+          ANSIBLE_FORCE_COLOR: '1'
+        run: |
+          docker run \
+          -v $(pwd)/:/repo \
+          ghcr.io/redlinetriad/molecule-vagrant-qemu-action:v1 \
+          sh -c "\
+            molecule --version \
+            && cd /repo \
+            && molecule test \
+          "
         
