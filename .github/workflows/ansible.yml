@@ -23,7 +23,7 @@ jobs:
           ghcr.io/redlinetriad/molecule-vagrant-qemu-action:v1 \
           sh -c "\
             molecule --version \
-            && cd /repo \
+            && cd /repo/software \
             && molecule test \
           "
         
