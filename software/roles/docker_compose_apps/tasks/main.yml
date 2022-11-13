@@ -14,7 +14,7 @@
 
 - name: Start docker-compose services
   ansible.builtin.command:
-    cmd: docker compose up -d
+    cmd: docker compose up --detach --remove-orphans
     chdir: "/srv/{{ service }}"
   vars:
     service: "{{ item.path | dirname | basename }}"
