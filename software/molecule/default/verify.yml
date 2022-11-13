@@ -21,7 +21,7 @@
     - name: Verify Docker Version
       ansible.builtin.assert:
         that: '"version 20" in docker_version.stdout'
-    
+
     - name: Verify Reverse Proxy Response
       ansible.builtin.uri:
         url: https://localhost/
