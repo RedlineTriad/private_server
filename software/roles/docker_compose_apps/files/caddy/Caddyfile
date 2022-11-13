@@ -1,5 +1,7 @@
 localhost {
-	reverse_proxy /grocy/* grocy:8080
-	
 	respond "Hello, world!"
+}
+
+grocy.pascal.build {
+	reverse_proxy grocy:8080
 }

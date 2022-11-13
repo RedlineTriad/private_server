@@ -2,14 +2,14 @@
 version: '2.4'
 
 services:
-
-  frontend:
+  grocy:
     image: "grocy/frontend:v3.3.1"
     read_only: true
     tmpfs:
       - /tmp
-    volumes:
-      - /var/log/grocy/nginx:/var/log/var/log/nginx
+    networks:
+      - default
+      - rproxy
 
   backend:
     image: "grocy/backend:v3.3.1"
@@ -17,14 +17,17 @@ services:
     tmpfs:
       - /tmp
     volumes:
-      - /var/log/grocy/php:/var/log/php8
       - app-db:/var/www/data
+      - ./php-fpm.conf:/etc/php8/php-fpm.d/z-php-fpm.conf
     env_file:
       - grocy.env
+    networks:
+      - default
 
 volumes:
   app-db:
 
 networks:
+  default:
   rproxy:
     external: true
