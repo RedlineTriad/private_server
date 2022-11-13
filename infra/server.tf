@@ -1,19 +1,3 @@
-terraform {
-  cloud {
-    organization = "redline"
-    workspaces {
-      name = "private_server"
-    }
-  }
-}
-
-provider "hcloud" {
-  token = var.hcloud_token
-}
-provider "cloudflare" {
-  api_token = var.cloudflare_api_token
-}
-
 resource "hcloud_server" "web" {
   name        = "web"
   image       = "debian-10"
