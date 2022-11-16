@@ -1,3 +1,6 @@
 {
-  "data-root": "/mnt/data/docker"
+  "data-root": "/mnt/data/docker",
+  "ip": "127.0.0.1",
+  "ipv6": true,
+  "fixed-cidr-v6": "fddc:a418:b327::/48"
 }
