@@ -7,9 +7,9 @@ services:
     restart: unless-stopped
     read_only: true
     ports:
-      - "80:80"
-      - "443:443"
-      - "443:443/udp"
+      - "0.0.0.0:80:80"
+      - "0.0.0.0:443:443"
+      - "0.0.0.0:443:443/udp"
     volumes:
       - ./Caddyfile:/etc/caddy/Caddyfile
       - caddy_data:/data
