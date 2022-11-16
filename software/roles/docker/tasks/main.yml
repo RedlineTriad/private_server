@@ -30,6 +30,32 @@
     repo: deb https://download.docker.com/linux/debian bullseye stable
     state: present
 
+- name: Create Docker Directory
+  ansible.builtin.file:
+    path: /var/lib/docker
+    state: directory
+    mode: 0710
+
+- name: Create Docker Data Directory
+  ansible.builtin.file:
+    path: /mnt/data/docker
+    state: directory
+    mode: 0710
+
+- name: Create Docker Data Volume Directory
+  ansible.builtin.file:
+    path: /mnt/data/docker/volumes
+    state: directory
+    mode: 0701
+
+- name: Create Symlink to Store Volumes Separatly
+  ansible.builtin.file:
+    path: /var/lib/docker/volumes
+    src: /mnt/data/docker/volumes
+    state: link
+    mode: 0701
+    force: yes
+
 - name: Update apt and install docker-ce
   apt:
     pkg:
