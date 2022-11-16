@@ -6,12 +6,26 @@
   gather_facts: false
   tasks:
     - name: Get Docker Version
-      ansible.builtin.command: docker -v
-      register: docker_version
+      community.docker.docker_host_info:
+        volumes: yes
+      register: docker_host_info
+      become: true
 
-    - name: Verify Docker Version
+    - name: Get List of Anonymous volumes
+      ansible.builtin.set_fact:
+        docker_anonymous_volumes: >-
+          {{
+          docker_host_info
+          | community.general.json_query('volumes[*].Name')
+          | select('match', '^[0-9a-f]{64}$')
+          }}
+
+    - name: Verify that no Anonymous Volumes exist
       ansible.builtin.assert:
-        that: '"version 20" in docker_version.stdout'
+        that: not docker_anonymous_volumes
+        fail_msg: >-
+          Expected no anonymous volumes, found:
+          {{ docker_anonymous_volumes }}
 
     - name: Get Docker Volume
       ansible.builtin.stat:
@@ -22,21 +36,6 @@
     - name: Verify Docker Volume Location
       ansible.builtin.assert:
         that: docker_volume.stat.exists
-
-    - name: Get List of Anonymous Volumes
-      ansible.builtin.command:
-        cmd: "{% raw %}docker volume list --format '{{.Name}}'{% endraw %}"
-      changed_when: false
-      register: docker_anonymous_volumes
-      become: true
-
-    - name: Verify that no Anonymous Volumes exist
-      ansible.builtin.assert:
-        that: |-
-          not (
-            docker_anonymous_volumes.stdout
-            | regex_findall('^[0-9a-f]{64}$', multiline=True, ignorecase=True)
-          )
 
     - name: Get docker-compose Services
       ansible.builtin.stat:

@@ -13,11 +13,10 @@
   register: find
 
 - name: Start docker-compose services
-  ansible.builtin.command:
-    cmd: docker compose up --detach --remove-orphans
-    chdir: "/srv/{{ service }}"
+  community.docker.docker_compose:
+    project_src: "/srv/{{ service }}"
+    remove_orphans: yes
   vars:
     service: "{{ item.path | dirname | basename }}"
-  changed_when: "'done' in compose.stdout"
   register: compose
   loop: "{{ find.files }}"
