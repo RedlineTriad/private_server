@@ -5,6 +5,24 @@
   hosts: all
   gather_facts: false
   tasks:
+    - name: Get Docker Version
+      ansible.builtin.command: docker -v
+      register: docker_version
+
+    - name: Verify Docker Version
+      ansible.builtin.assert:
+        that: '"version 20" in docker_version.stdout'
+
+    - name: Get Docker Volume
+      ansible.builtin.stat:
+        path: /mnt/data/docker/volumes/caddy_caddy_data
+      register: docker_volume
+      become: true
+
+    - name: Verify Docker Volume Location
+      ansible.builtin.assert:
+        that: docker_volume.stat.exists
+
     - name: Get docker-compose Services
       ansible.builtin.stat:
         path: /srv/caddy
@@ -13,14 +31,6 @@
     - name: Verify docker-compose Services
       ansible.builtin.assert:
         that: stat_result.stat.exists
-
-    - name: Get Docker Version
-      ansible.builtin.command: docker -v
-      register: docker_version
-
-    - name: Verify Docker Version
-      ansible.builtin.assert:
-        that: '"version 20" in docker_version.stdout'
 
     - name: Verify Reverse Proxy Response
       ansible.builtin.uri:

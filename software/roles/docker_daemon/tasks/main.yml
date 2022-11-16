@@ -1,0 +1,10 @@
+---
+- name: Copy Docker Daemon Config
+  ansible.builtin.copy:
+    src: daemon.json
+    dest: /etc/docker/daemon.json
+  notify:
+    - Restart Docker Daemon
+
+- name: Flush handlers
+  meta: flush_handlers
