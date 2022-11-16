@@ -1,6 +1,6 @@
 resource "hcloud_server" "web" {
   name        = "web"
-  image       = "debian-10"
+  image       = "debian-11"
   server_type = "cpx11"
   ssh_keys    = [hcloud_ssh_key.ansible.name]
   public_net {
