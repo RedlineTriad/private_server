@@ -7,6 +7,9 @@ services:
     read_only: true
     tmpfs:
       - /tmp
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+      - /var/empty/docker:/var/log/nginx:ro
     networks:
       - default
       - rproxy
