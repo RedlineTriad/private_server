@@ -19,7 +19,6 @@ platforms:
 provisioner:
   name: ansible
   env:
-    ANSIBLE_ROLES_PATH: "../../roles"
     ANSIBLE_PIPELINING: "True"
 verifier:
   name: ansible
