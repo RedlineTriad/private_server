@@ -27,7 +27,7 @@
 
 - name: Add Docker Repository
   apt_repository:
-    repo: deb https://download.docker.com/linux/debian buster stable
+    repo: deb https://download.docker.com/linux/debian bullseye stable
     state: present
 
 - name: Update apt and install docker-ce

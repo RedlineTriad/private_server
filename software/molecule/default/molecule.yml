@@ -7,7 +7,7 @@ driver:
     name: qemu
 platforms:
   - name: instance
-    box: debian/buster64
+    box: debian/bullseye64
     provider_options:
       qemu_dir: /usr/bin/
       arch: x86_64
