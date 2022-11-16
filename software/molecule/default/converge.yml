@@ -2,4 +2,4 @@
 - name: Converge
   hosts: all
 
-- import_playbook: ../../playbooks/all.yml
+- import_playbook: ../../site.yml

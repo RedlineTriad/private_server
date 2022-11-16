@@ -3,6 +3,11 @@ variable "hcloud_token" {
   sensitive = true
 }
 
+variable "ansible_ssh_public_key" {
+  type      = string
+  sensitive = true
+}
+
 variable "cloudflare_api_token" {
   type      = string
   sensitive = true

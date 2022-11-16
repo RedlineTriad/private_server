@@ -23,16 +23,36 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+      
+      - name: Cache known-hosts
+        uses: actions/cache@v3
+        with:
+          path: ~/.ssh/known_hosts
+          key: known-hosts
+      
+      - name: Install SSH key
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.ANSIBLE_SSH_KEY }}
+          known_hosts: ${{ secrets.KNOWN_HOSTS }}
+          config: |
+            Host *
+              StrictHostKeyChecking=accept-new
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v1
         with:
-          # terraform_version: 0.13.0:
           cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
 
       - name: Terraform Init
         id: init
         run: terraform init
 
-      # - name: Terraform Apply
-      #   run: terraform apply -auto-approve -input=false
+      - name: Terraform Apply
+        run: terraform apply -auto-approve -input=false
+      
+      - name: Switch to Software Directory
+        run: cd ${{ github.workspace }}/software
+      
+      - name: Configure Server with Ansible
+        run: ansible-playbook -i hosts site.yml --check
