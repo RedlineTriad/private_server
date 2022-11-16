@@ -23,6 +23,21 @@
       ansible.builtin.assert:
         that: docker_volume.stat.exists
 
+    - name: Get List of Anonymous Volumes
+      ansible.builtin.command:
+        cmd: "{% raw %}docker volume list --format '{{.Name}}'{% endraw %}"
+      changed_when: false
+      register: docker_anonymous_volumes
+      become: true
+
+    - name: Verify that no Anonymous Volumes exist
+      ansible.builtin.assert:
+        that: |-
+          not (
+            docker_anonymous_volumes.stdout
+            | regex_findall('^[0-9a-f]{64}$', multiline=True, ignorecase=True)
+          )
+
     - name: Get docker-compose Services
       ansible.builtin.stat:
         path: /srv/caddy
