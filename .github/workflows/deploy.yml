@@ -23,13 +23,13 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      
+
       - name: Cache known-hosts
         uses: actions/cache@v3
         with:
           path: ~/.ssh/known_hosts
           key: known-hosts
-      
+
       - name: Install SSH key
         uses: shimataro/ssh-key-action@v2
         with:
@@ -50,9 +50,12 @@ jobs:
 
       - name: Terraform Apply
         run: terraform apply -auto-approve -input=false
-      
+
       - name: Switch to Software Directory
         run: cd ${{ github.workspace }}/software
-      
+
+      - name: Get Dependencies from Ansible Galaxy
+        run: ansible-galaxy install -r requirements.yml
+
       - name: Configure Server with Ansible
-        run: ansible-playbook -i hosts site.yml --check
+        run: ansible-playbook -i hosts site.yml
