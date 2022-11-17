@@ -15,8 +15,8 @@
       ansible.builtin.set_fact:
         docker_anonymous_volumes: >-
           {{
-          docker_host_info
-          | community.general.json_query('volumes[*].Name')
+          docker_host_info.volumes
+          | map(attribute='Name')
           | select('match', '^[0-9a-f]{64}$')
           }}
 
