@@ -34,6 +34,7 @@ jobs:
         uses: shimataro/ssh-key-action@v2
         with:
           key: ${{ secrets.ANSIBLE_SSH_KEY }}
+          known_hosts: unnecessary
           config: |
             Host *
               StrictHostKeyChecking=accept-new
