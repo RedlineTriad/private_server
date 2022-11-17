@@ -51,9 +51,16 @@
         url: https://localhost/
         validate_certs: no
 
-    - name: Verify Grocy Reverse Proxy Response
+    - name: Get Grocy Reverse Proxy Response
       ansible.builtin.uri:
         url: https://localhost/login
+        return_content: yes
         validate_certs: no
         headers:
           Host: grocy.pascal.build
+      register: grocy_response
+
+    - name: Verify Grocy Reverse Proxy Response
+      ansible.builtin.assert:
+        that: >-
+          'content="grocy"' in grocy_response.content
