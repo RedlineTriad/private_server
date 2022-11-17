@@ -1,4 +1,4 @@
-name: "Terraform"
+name: Terraform
 
 on:
   pull_request:
@@ -8,16 +8,14 @@ permissions:
 
 jobs:
   terraform:
-    name: "Terraform"
+    name: Terraform
     runs-on: ubuntu-latest
     environment: production
     permissions:
       pull-requests: write
 
-    # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
     defaults:
       run:
-        shell: bash
         working-directory: infra
 
     steps:
@@ -32,14 +30,17 @@ jobs:
       - name: Terraform Format
         id: fmt
         run: terraform fmt -check
+        continue-on-error: true
 
       - name: Terraform Init
         id: init
         run: terraform init
+        continue-on-error: true
       
       - name: Terraform Validate
         id: validate
         run: terraform validate -no-color
+        continue-on-error: true
 
       - name: Terraform Plan
         id: plan
@@ -74,5 +75,9 @@ jobs:
             })
 
       - name: Terraform Plan Status
-        if: steps.plan.outcome == 'failure'
+        if: >-
+          (steps.fmt.outcome == 'failure') ||
+          (steps.init.outcome == 'failure') ||
+          (steps.validate.outcome == 'failure') ||
+          (steps.plan.outcome == 'failure')
         run: exit 1
