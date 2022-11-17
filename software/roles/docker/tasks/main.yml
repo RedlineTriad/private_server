@@ -1,12 +1,12 @@
 ---
 - name: Install aptitude
-  apt:
+  ansible.builtin.apt:
     name: aptitude
-    state: latest
+    state: present
     update_cache: true
 
 - name: Install required system packages
-  apt:
+  ansible.builtin.apt:
     pkg:
       - ca-certificates
       - curl
@@ -17,16 +17,16 @@
       - python3-pip
       - virtualenv
       - python3-setuptools
-    state: latest
+    state: present
     update_cache: true
 
 - name: Add Docker GPG apt Key
-  apt_key:
+  ansible.builtin.apt_key:
     url: https://download.docker.com/linux/debian/gpg
     state: present
 
 - name: Add Docker Repository
-  apt_repository:
+  ansible.builtin.apt_repository:
     repo: deb https://download.docker.com/linux/debian bullseye stable
     state: present
 
@@ -46,29 +46,29 @@
   ansible.builtin.file:
     path: /mnt/data/docker/volumes
     state: directory
-    mode: 0701
+    mode: '0701'
 
 - name: Create Symlink to Store Volumes Separatly
   ansible.builtin.file:
     path: /var/lib/docker/volumes
     src: /mnt/data/docker/volumes
     state: link
-    mode: 0701
+    mode: '0701'
     force: yes
 
 - name: Update apt and install docker-ce
-  apt:
+  ansible.builtin.apt:
     pkg:
       - docker-ce
       - docker-ce-cli
       - containerd.io
       - docker-compose-plugin
-    state: latest
+    state: present
     update_cache: true
 
 - name: Install Docker Module for Python
-  pip:
+  ansible.builtin.pip:
     name:
       - docker
       - docker-compose
-    state: latest
+    state: present
