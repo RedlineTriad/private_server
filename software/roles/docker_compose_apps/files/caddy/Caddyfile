@@ -1,4 +1,4 @@
-localhost {
+localhost, pascal.build {
 	respond "Hello, world!"
 }
 
