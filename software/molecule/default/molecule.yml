@@ -25,6 +25,4 @@ provisioner:
     ANSIBLE_PIPELINING: "True"
 verifier:
   name: ansible
-lint: |
-  yamllint .
-  ansible-lint .
+lint: ansible-lint

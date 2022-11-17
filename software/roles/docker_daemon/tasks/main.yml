@@ -3,8 +3,9 @@
   ansible.builtin.copy:
     src: daemon.json
     dest: /etc/docker/daemon.json
+    mode: 0644
   notify:
     - Restart Docker Daemon
 
 - name: Flush handlers
-  meta: flush_handlers
+  ansible.builtin.meta: flush_handlers

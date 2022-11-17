@@ -3,6 +3,7 @@
   ansible.builtin.copy:
     src: "."
     dest: "/srv/"
+    mode: 0644
 
 - name: Get All docker compose Services
   ansible.builtin.find:
