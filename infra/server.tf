@@ -88,3 +88,12 @@ resource "cloudflare_record" "aaaa" {
   type    = "AAAA"
   ttl     = 300
 }
+
+resource "cloudflare_record" "aliases" {
+  for_each = toset(["grocy"])
+  zone_id  = cloudflare_zone.personal_domain.id
+  name     = var.server_domain_name
+  value    = "@"
+  type     = "CNAME"
+  ttl      = 300
+}
