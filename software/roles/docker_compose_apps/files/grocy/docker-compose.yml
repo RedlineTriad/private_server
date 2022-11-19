@@ -2,8 +2,9 @@
 version: '2.4'
 
 services:
-  grocy:
-    image: "grocy/frontend:v3.3.1"
+  frontend:
+    image: grocy/frontend:v3.3.1
+    restart: unless-stopped
     read_only: true
     tmpfs:
       - /tmp
@@ -13,9 +14,14 @@ services:
     networks:
       - default
       - rproxy
+    labels:
+      - traefik.http.routers.grocy.rule=Host(`grocy.pascal.build`)
+      - traefik.http.routers.grocy.entrypoints=https
+      - traefik.http.routers.grocy.tls.certResolver=letsencrypt
 
   backend:
-    image: "grocy/backend:v3.3.1"
+    image: grocy/backend:v3.3.1
+    restart: unless-stopped
     read_only: true
     tmpfs:
       - /tmp
