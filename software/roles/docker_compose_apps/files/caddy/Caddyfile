@@ -1,7 +1,0 @@
-localhost, pascal.build {
-	respond "Hello, world!"
-}
-
-grocy.pascal.build {
-	reverse_proxy grocy:8080
-}

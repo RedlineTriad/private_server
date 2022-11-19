@@ -23,6 +23,10 @@ provisioner:
   name: ansible
   env:
     ANSIBLE_PIPELINING: "True"
+  inventory:
+    host_vars:
+      instance:
+        letsencrypt: no
 verifier:
   name: ansible
 lint: ansible-lint

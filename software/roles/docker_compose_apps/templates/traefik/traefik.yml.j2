@@ -1,0 +1,30 @@
+experimental:
+  http3: true
+
+entryPoints:
+  http:
+    address: :80
+    http:
+      redirections:
+        entryPoint:
+          to: https
+          scheme: https
+
+  https:
+    address: :443
+
+  name:
+    http3: {}
+
+certificatesResolvers:
+{% if letsencrypt | default(true) %}
+  letsencrypt:
+    acme:
+      storage: /letsencrypt/acme.json
+      httpChallenge:
+        entryPoint: http
+{% endif %}
+
+providers:
+  docker:
+    network: rproxy
