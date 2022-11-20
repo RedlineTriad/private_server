@@ -1,0 +1,54 @@
+---
+- name: Get Files
+  ansible.builtin.include_tasks:
+    file: get_files.yml
+  loop: [yes, no]
+  loop_control:
+    loop_var: template
+
+- name: Get File Directories
+  ansible.builtin.set_fact:
+    file_directories: >
+      {{
+      file_paths.non_templated
+      | union(file_paths.templated)
+      | map('dirname')
+      | unique
+      }}
+
+- name: Create Directories
+  ansible.builtin.file:
+    path: "/srv/{{ item }}"
+    mode: 0644
+    state: directory
+  loop: "{{ file_directories }}"
+
+- name: Copy Non-Templated Files to Target
+  ansible.builtin.copy:
+    src: "{{ role_path }}/templates/{{ item }}"
+    dest: "/srv/{{ item }}"
+    mode: 0644
+  loop: "{{ file_paths.non_templated }}"
+  register: non_templated_file_creation
+
+- name: Copy Templated Files to Target
+  ansible.builtin.template:
+    src: "{{ item }}"
+    dest: "/srv/{{ item | replace('.j2', '') }}"
+    mode: 0644
+  loop: "{{ file_paths.templated }}"
+  register: templated_file_creation
+
+- name: Start Docker Compose Applications
+  community.docker.docker_compose:
+    project_src: "/srv/{{ app }}"
+    remove_orphans: yes
+    recreate: >-
+      {{
+        (
+          non_templated_file_creation.changed
+          and
+          templated_file_creation.changed
+        )
+        | ternary('always', 'smart')
+      }}

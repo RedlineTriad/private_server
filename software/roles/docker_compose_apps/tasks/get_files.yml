@@ -1,0 +1,26 @@
+---
+- name: Get List of Files
+  ansible.builtin.find:
+    paths: "{{ role_path }}/templates/{{ app }}"
+    exclude: "{{ template | ternary(omit, '*.j2') }}"
+    pattern: "{{ template | ternary('*.j2', omit) }}"
+    recurse: yes
+  delegate_to: localhost
+  become: false
+  register: files
+
+- name: Get Relative File Paths
+  ansible.builtin.set_fact:
+    file_paths: >
+      {{
+        (
+          files.files
+          | map(attribute='path')
+          | map('replace', role_path ~ '/templates/', '')
+        )
+        | community.general.dict_kv
+          (
+            template| ternary('templated', 'non_templated')
+          )
+        | combine(file_paths | default(dict()), list_merge='keep')
+      }}
