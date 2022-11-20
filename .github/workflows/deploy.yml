@@ -70,3 +70,6 @@ jobs:
 
       - name: Configure Server with Ansible
         run: ansible-playbook -i hosts site.yml
+        env:
+          ANSIBLE_FORCE_COLOR: 1
+          ANSIBLE_ASYNC_DIR: /tmp/.ansible_async
