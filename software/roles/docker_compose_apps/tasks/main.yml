@@ -1,64 +1,9 @@
 ---
-- name: Copy Docker Compose Applications to Target
-  ansible.builtin.copy:
-    src: "."
-    dest: "/srv/"
-    mode: 0644
-
-- name: Get List of Templates
-  ansible.builtin.find:
-    paths: "{{ role_path }}/templates/"
-    patterns: "*.j2"
-    recurse: yes
-  delegate_to: localhost
-  become: false
-  register: template_files
-
-- name: Get Relative Template Paths
-  ansible.builtin.set_fact:
-    template_file_paths: >
-      {{
-      template_files.files
-      | map(attribute='path')
-      | map('replace', role_path ~ '/templates/', '')
-      }}
-
-- name: Get Template Directories
-  ansible.builtin.set_fact:
-    template_directory_paths: >
-      {{
-      template_file_paths
-      | map('dirname')
-      | unique
-      }}
-
-- name: Create Template Directories
-  ansible.builtin.file:
-    path: "/srv/{{ item }}"
-    mode: 0644
-    state: directory
-  loop: "{{ template_directory_paths }}"
-
-- name: Copy Application Templates to Target
-  ansible.builtin.template:
-    src: "{{ item }}"
-    dest: "/srv/{{ item | replace('.j2', '') }}"
-    mode: 0644
-  loop: "{{ template_file_paths }}"
-
-- name: Get All Docker Compose Services
-  ansible.builtin.find:
-    paths: /srv
-    patterns: docker-compose.yml
-    recurse: yes
-    depth: 2
-  register: find
-
-- name: Start Docker Compose Services
-  community.docker.docker_compose:
-    project_src: "/srv/{{ service }}"
-    remove_orphans: yes
-  vars:
-    service: "{{ item.path | dirname | basename }}"
-  register: compose
-  loop: "{{ find.files }}"
+- name: Setup Docker Compose Application
+  ansible.builtin.include_tasks:
+    file: install_application.yml
+  loop:
+    - traefik
+    - grocy
+  loop_control:
+    loop_var: app
