@@ -25,7 +25,7 @@
 
 - name: Copy Non-Templated Files to Target
   ansible.builtin.copy:
-    src: "{{ role_path }}/templates/{{ item }}"
+    src: "templates/{{ item }}"
     dest: "/srv/{{ item }}"
     mode: 0644
   loop: "{{ file_paths.non_templated }}"

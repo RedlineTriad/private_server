@@ -3,10 +3,9 @@
   community.docker.docker_compose:
     project_src: /srv/{{ app }}
     remove_orphans: yes
+    remove_volumes: yes
 
 - name: Delete Application Files
   ansible.builtin.file:
     path: /srv/{{ app }}
-    remove_orphans: yes
-    remove_volumes: yes
     state: absent

@@ -59,3 +59,12 @@
       ansible.builtin.assert:
         that: >-
           'content="grocy"' in grocy_response.content
+
+    - name: Get Test Docker Compose Application
+      ansible.builtin.stat:
+        path: /srv/test_app
+      register: test_compose_app
+
+    - name: Test Docker Compose Application
+      ansible.builtin.assert:
+        that: not test_compose_app.stat.exists

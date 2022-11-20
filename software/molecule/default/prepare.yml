@@ -1,0 +1,21 @@
+---
+- name: Create Old Docker Compose Application
+  hosts: all
+  become: true
+  tasks:
+    - name: Create Folder
+      ansible.builtin.file:
+        path: /srv/test_app
+        state: directory
+        mode: 0644
+
+    - name: Create Docker Compose File
+      ansible.builtin.copy:
+        dest: /srv/test_app/docker-compose.yml
+        mode: 0644
+        content: |-
+         version: "3.3"
+
+         services:
+           whoami:
+             image: "traefik/whoami"

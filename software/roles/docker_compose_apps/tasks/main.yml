@@ -19,15 +19,17 @@
       }}
 
 - name: Uninstall Docker Compose Applications
-  ansible.builtin.include_tasks:
-    file: uninstall_application.yml
+  ansible.builtin.include_role:
+    name: docker_compose_app
+  vars:
+    state: absent
   loop: "{{ apps_to_uninstall }}"
   loop_control:
     loop_var: app
 
-- name: Setup Docker Compose Applications
-  ansible.builtin.include_tasks:
-    file: install_application.yml
+- name: Install Docker Compose Applications
+  ansible.builtin.include_role:
+    name: docker_compose_app
   loop: "{{ apps }}"
   loop_control:
     loop_var: app

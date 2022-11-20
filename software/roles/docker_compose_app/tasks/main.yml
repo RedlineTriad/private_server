@@ -1,0 +1,10 @@
+---
+- name: Uninstall Docker Compose Application
+  ansible.builtin.include_tasks:
+    file: uninstall_application.yml
+  when: state == 'absent'
+
+- name: Install Docker Compose Application
+  ansible.builtin.include_tasks:
+    file: install_application.yml
+  when: state == 'present'
