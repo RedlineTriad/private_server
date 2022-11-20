@@ -1,9 +1,33 @@
 ---
-- name: Setup Docker Compose Application
+- name: Get Installed Applications
+  ansible.builtin.find:
+    paths: /srv
+    patterns: docker-compose.yml
+    recurse: yes
+    depth: 2
+  register: docker_compose_files
+
+- name: Get Applications to Remove
+  ansible.builtin.set_fact:
+    apps_to_uninstall: >-
+      {{
+        docker_compose_files.files
+        | map(attribute='path')
+        | map('dirname')
+        | map('basename')
+        | difference(apps)
+      }}
+
+- name: Uninstall Docker Compose Applications
+  ansible.builtin.include_tasks:
+    file: uninstall_application.yml
+  loop: "{{ apps_to_uninstall }}"
+  loop_control:
+    loop_var: app
+
+- name: Setup Docker Compose Applications
   ansible.builtin.include_tasks:
     file: install_application.yml
-  loop:
-    - traefik
-    - grocy
+  loop: "{{ apps }}"
   loop_control:
     loop_var: app

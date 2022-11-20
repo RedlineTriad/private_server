@@ -43,6 +43,7 @@
   community.docker.docker_compose:
     project_src: "/srv/{{ app }}"
     remove_orphans: yes
+    remove_volumes: yes
     recreate: >-
       {{
         (
