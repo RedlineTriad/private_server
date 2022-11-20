@@ -1,7 +1,12 @@
 ---
+
 - name: Get List of Files
   ansible.builtin.find:
-    paths: "{{ role_path }}/templates/{{ app }}"
+    paths: >-
+      {{
+        ansible_search_path
+        | map('regex_replace', '(^.*$)', '\1/templates/' ~ app)
+      }}
     exclude: "{{ template | ternary(omit, '*.j2') }}"
     pattern: "{{ template | ternary('*.j2', omit) }}"
     recurse: yes
@@ -16,7 +21,7 @@
         (
           files.files
           | map(attribute='path')
-          | map('replace', role_path ~ '/templates/', '')
+          | map('regex_replace', '.*?/templates/(.*)', '\1')
         )
         | community.general.dict_kv
           (

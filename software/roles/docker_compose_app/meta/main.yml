@@ -1,0 +1,15 @@
+---
+argument_specs:
+  main:
+    options:
+      app:
+        type: str
+        required: yes
+        description: The name of the docker compose application
+
+      state:
+        type: str
+        choices:
+          - present
+          - absent
+        default: present

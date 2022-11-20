@@ -21,6 +21,8 @@ platforms:
       - extra_qemu_args = %w(-vga std)
 provisioner:
   name: ansible
+  playbooks:
+    prepare: prepare.yml
   env:
     ANSIBLE_PIPELINING: "True"
   inventory:
