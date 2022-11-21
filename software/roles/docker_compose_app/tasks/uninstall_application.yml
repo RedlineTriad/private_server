@@ -2,6 +2,7 @@
 - name: Uninstall Docker Compose Application
   community.docker.docker_compose:
     project_src: /srv/{{ app }}
+    state: absent
     remove_orphans: yes
     remove_volumes: yes
 

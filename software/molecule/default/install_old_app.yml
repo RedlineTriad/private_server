@@ -19,3 +19,7 @@
          services:
            whoami:
              image: "traefik/whoami"
+
+    - name: Start Docker Compose Application
+      community.docker.docker_compose:
+        project_src: /srv/test_app
