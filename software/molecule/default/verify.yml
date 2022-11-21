@@ -8,6 +8,7 @@
     - name: Get Docker Version
       community.docker.docker_host_info:
         volumes: yes
+        containers: yes
       register: docker_host_info
       become: true
 
@@ -68,3 +69,10 @@
     - name: Test Docker Compose Application
       ansible.builtin.assert:
         that: not test_compose_app.stat.exists
+
+    - name: Test Docker Compose Application
+      ansible.builtin.assert:
+        that: >-
+          'traefik/whoami'
+          not in
+          (docker_host_info.containers | map(attribute='Image'))

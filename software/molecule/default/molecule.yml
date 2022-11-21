@@ -22,7 +22,7 @@ platforms:
 provisioner:
   name: ansible
   playbooks:
-    prepare: prepare.yml
+    side_effect: install_old_app.yml
   env:
     ANSIBLE_PIPELINING: "True"
   inventory:
@@ -32,3 +32,19 @@ provisioner:
 verifier:
   name: ansible
 lint: ansible-lint
+scenario:
+  test_sequence:
+    - dependency
+    - lint
+    - cleanup
+    - destroy
+    - syntax
+    - create
+    - prepare
+    - converge
+    - side_effect
+    - converge
+    - idempotence
+    - verify
+    - cleanup
+    - destroy
