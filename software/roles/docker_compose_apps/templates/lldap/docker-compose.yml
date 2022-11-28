@@ -1,0 +1,33 @@
+---
+version: '3'
+
+services:
+  lldap:
+    image: nitnelave/lldap:latest-alpine
+    entrypoint: /app/lldap
+    command: ["run", "--config-file", "/data/lldap_config.toml"]
+    restart: unless-stopped
+    read_only: true
+    environment:
+      LLDAP_JWT_SECRET: ${JWT_SECRET}
+      LLDAP_LDAP_USER_PASS: ${USER_PASSWORD}
+      LLDAP_LDAP_BASE_DN: dc=pascal,dc=build
+      # LLDAP_VERBOSE: "true"
+    volumes:
+      - lldap-data:/data
+    ports:
+      - 17170:17170
+    expose:
+      # For LDAP
+      - 3890
+      # For the web front-end
+      - 17170
+    networks:
+      - ldap
+
+volumes:
+  lldap-data:
+
+networks:
+  ldap:
+    name: ldap
