@@ -10,6 +10,7 @@
     exclude: "{{ template | ternary(omit, '*.j2') }}"
     pattern: "{{ template | ternary('*.j2', omit) }}"
     recurse: yes
+    hidden: yes
   delegate_to: localhost
   become: false
   register: files
