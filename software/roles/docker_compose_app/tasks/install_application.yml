@@ -48,7 +48,7 @@
       {{
         (
           non_templated_file_creation.changed
-          and
+          or
           templated_file_creation.changed
         )
         | ternary('always', 'smart')
