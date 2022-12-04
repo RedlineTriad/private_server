@@ -9,7 +9,7 @@ services:
     tmpfs:
       - /tmp
     volumes:
-      - ./nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
       - /var/empty/docker:/var/log/nginx:ro
     networks:
       - default
@@ -27,15 +27,15 @@ services:
     tmpfs:
       - /tmp
     volumes:
-      - app-db:/var/www/data
-      - ./php-fpm.conf:/etc/php8/php-fpm.d/z-php-fpm.conf
+      - app_db:/var/www/data
+      - ./php-fpm.conf:/etc/php8/php-fpm.d/z-php-fpm.conf:ro
     env_file:
       - grocy.env
     networks:
       - default
 
 volumes:
-  app-db:
+  app_db:
 
 networks:
   default:
