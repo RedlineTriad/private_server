@@ -18,7 +18,7 @@ platforms:
       cpu: max
       net_device: virtio-net-pci
     provider_raw_config_args:
-      - extra_qemu_args = %w(-vga std)
+      - extra_qemu_args = %w(-vga std $QEMU_ARGS)
 provisioner:
   name: ansible
   playbooks:
