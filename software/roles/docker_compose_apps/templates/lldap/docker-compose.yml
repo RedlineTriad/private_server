@@ -14,20 +14,23 @@ services:
       LLDAP_LDAP_BASE_DN: dc=pascal,dc=build
       # LLDAP_VERBOSE: "true"
     volumes:
-      - lldap-data:/data
-    ports:
-      - 17170:17170
-    expose:
-      # For LDAP
-      - 3890
-      # For the web front-end
-      - 17170
+      - lldap_data:/data/dynamic
+      - ./lldap_config.toml:/data/lldap_config.toml:ro
     networks:
       - ldap
+      - rproxy
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.lldap.rule=Host(`ldap.localhost`)
+      - traefik.http.routers.lldap.entrypoints=https
+      - traefik.http.routers.lldap.tls.certResolver=letsencrypt
+      - traefik.http.services.lldap.loadbalancer.server.port=17170
 
 volumes:
-  lldap-data:
+  lldap_data:
 
 networks:
+  rproxy:
+    external: true
   ldap:
     name: ldap
