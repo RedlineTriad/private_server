@@ -29,6 +29,8 @@ provisioner:
     host_vars:
       instance:
         letsencrypt: no
+        base_domain: me.localhost
+
 verifier:
   name: ansible
 lint: ansible-lint
