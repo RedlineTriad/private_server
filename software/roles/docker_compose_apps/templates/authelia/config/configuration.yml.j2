@@ -1,0 +1,85 @@
+---
+###############################################################
+#                   Authelia configuration                    #
+###############################################################
+
+default_redirection_url: https://{{ base_domain }}
+
+server:
+  host: 0.0.0.0
+  port: 9091
+
+# log:
+#   level: debug
+
+totp:
+  issuer: {{ base_domain }}
+
+access_control:
+  default_policy: deny
+  rules:
+    - domain: ldap.{{ base_domain }}
+      policy: one_factor
+    - domain: grocy.{{ base_domain }}
+      policy: one_factor
+
+session:
+  name: session
+  expiration: 3600  # 1 hour
+  inactivity: 300  # 5 minutes
+  domain: {{ base_domain }}  # Should match whatever your root protected domain is
+
+regulation:
+  max_retries: 3
+  find_time: 120
+  ban_time: 300
+
+storage:
+  postgres:
+    host: db
+    database: authelia
+    username: authelia
+
+notifier:
+  filesystem:
+    filename: /tmp/notification.txt
+
+authentication_backend:
+  # Password reset through authelia works normally.
+  password_reset:
+    disable: false
+  # How often authelia should check if there is an user update in LDAP
+  refresh_interval: 1m
+  ldap:
+    implementation: custom
+    # Pattern is ldap://HOSTNAME-OR-IP:PORT
+    # Normal ldap port is 389, standard in LLDAP is 3890
+    url: ldap://lldap:3890
+    # The dial timeout for LDAP.
+    timeout: 5s
+    # Use StartTLS with the LDAP connection, TLS not supported right now
+    start_tls: false
+    #tls:
+    #  skip_verify: false
+    #  minimum_version: TLS1.2
+    # Set base dn, like dc=google,dc.com
+    base_dn: dc=pascal,dc=build
+    username_attribute: uid
+    # You need to set this to ou=people, because all users are stored in this ou!
+    additional_users_dn: ou=people
+    # To allow sign in both with username and email, one can use a filter like
+    # (&(|({username_attribute}={input})({mail_attribute}={input}))(objectClass=person))
+    users_filter: "(&({username_attribute}={input})(objectClass=person))"
+    # Set this to ou=groups, because all groups are stored in this ou
+    additional_groups_dn: ou=groups
+    # Only this filter is supported right now
+    groups_filter: "(member={dn})"
+    # The attribute holding the name of the group.
+    group_name_attribute: cn
+    # Email attribute
+    mail_attribute: mail
+    # The attribute holding the display name of the user. This will be used to greet an authenticated user.
+    display_name_attribute: displayName
+    # The username and password of the admin user.
+    # "admin" should be the admin username you set in the LLDAP configuration
+    user: uid=admin,ou=people,dc=pascal,dc=build

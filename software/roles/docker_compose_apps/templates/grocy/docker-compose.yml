@@ -16,9 +16,10 @@ services:
       - rproxy
     labels:
       - traefik.enable=true
-      - traefik.http.routers.grocy.rule=Host(`grocy.pascal.build`)
+      - traefik.http.routers.grocy.rule=Host(`grocy.$BASE_DOMAIN`)
       - traefik.http.routers.grocy.entrypoints=https
       - traefik.http.routers.grocy.tls.certResolver=letsencrypt
+      - traefik.http.routers.grocy.middlewares=authelia@docker
 
   backend:
     image: grocy/backend:v3.3.1
