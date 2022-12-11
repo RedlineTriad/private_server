@@ -9,8 +9,8 @@ services:
     restart: unless-stopped
     read_only: true
     environment:
-      LLDAP_JWT_SECRET: ${JWT_SECRET}
-      LLDAP_LDAP_USER_PASS: ${ADMIN_PASSWORD}
+      LLDAP_JWT_SECRET: ${LLDAP_JWT_SECRET}
+      LLDAP_LDAP_USER_PASS: ${LLDAP_ADMIN_PASSWORD}
       LLDAP_LDAP_BASE_DN: dc=pascal,dc=build
       # LLDAP_VERBOSE: "true"
     volumes:
