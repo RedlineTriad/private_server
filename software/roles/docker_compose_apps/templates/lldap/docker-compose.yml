@@ -5,7 +5,9 @@ services:
   lldap:
     image: nitnelave/lldap:latest-alpine
     entrypoint: /app/lldap
-    command: ["run", "--config-file", "/data/lldap_config.toml"]
+    command: ["run", "--config-file", "/etc/lldap_config.toml"]
+    healthcheck:
+      test: ["CMD", "/app/lldap", "run", "--config-file", "/etc/lldap_config.toml"]
     restart: unless-stopped
     read_only: true
     environment:
@@ -14,8 +16,8 @@ services:
       LLDAP_LDAP_BASE_DN: dc=pascal,dc=build
       # LLDAP_VERBOSE: "true"
     volumes:
-      - lldap_data:/data/dynamic
-      - ./lldap_config.toml:/data/lldap_config.toml:ro
+      - lldap_data:/data
+      - ./lldap_config.toml:/etc/lldap_config.toml:ro
     networks:
       - ldap
       - rproxy
