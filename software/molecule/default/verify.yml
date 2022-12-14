@@ -47,17 +47,17 @@
       ansible.builtin.assert:
         that: stat_result.stat.exists
 
-    - name: Get Grocy Reverse Proxy Response
+    - name: Get Authelia Reverse Proxy Response
       ansible.builtin.uri:
         url: https://auth.me.localhost/
         return_content: yes
         validate_certs: no
-      register: grocy_response
+      register: auth_response
 
-    - name: Verify Grocy Reverse Proxy Response
+    - name: Verify Authelia Reverse Proxy Response
       ansible.builtin.assert:
         that: >-
-          'content="grocy"' in grocy_response.content
+          'content="Authelia' in auth_response.content
 
     - name: Get Test Docker Compose Application
       ansible.builtin.stat:
