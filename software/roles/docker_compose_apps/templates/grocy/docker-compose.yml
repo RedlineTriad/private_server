@@ -3,14 +3,11 @@ version: '2.4'
 
 services:
   frontend:
-    image: grocy/frontend:v3.3.1
+    image: grocy/frontend:v3.3.2-3
     restart: unless-stopped
     read_only: true
     tmpfs:
       - /tmp
-    volumes:
-      - ./nginx.conf:/etc/nginx/nginx.conf:ro
-      - /var/empty/docker:/var/log/nginx:ro
     networks:
       - default
       - rproxy
@@ -22,14 +19,13 @@ services:
       - traefik.http.routers.grocy.middlewares=authelia@docker
 
   backend:
-    image: grocy/backend:v3.3.1
+    image: grocy/backend:v3.3.2-3
     restart: unless-stopped
     read_only: true
     tmpfs:
       - /tmp
     volumes:
       - app_db:/var/www/data
-      - ./php-fpm.conf:/etc/php8/php-fpm.d/z-php-fpm.conf:ro
     env_file:
       - grocy.env
     networks:
