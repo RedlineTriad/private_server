@@ -69,7 +69,14 @@ jobs:
         run: ansible-galaxy install -r requirements.yml
 
       - name: Configure Server with Ansible
-        run: ansible-playbook -i hosts site.yml
+        run: ansible-playbook -i hosts --extra-vars "base_domain=pascal.build" site.yml
         env:
           ANSIBLE_FORCE_COLOR: 1
           ANSIBLE_ASYNC_DIR: /tmp/.ansible_async
+          AUTHELIA_JWT_SECRET: ${{ secrets.AUTHELIA_JWT_SECRET }}
+          AUTHELIA_SESSION_SECRET: ${{ secrets.AUTHELIA_SESSION_SECRET }}
+          AUTHELIA_POSTGRES_PASSWORD: ${{ secrets.AUTHELIA_POSTGRES_PASSWORD }}
+          AUTHELIA_STORAGE_ENCRYPTION_KEY: ${{ secrets.AUTHELIA_STORAGE_ENCRYPTION_KEY }}
+          AUTHELIA_LDAP_PASSWORD: ${{ secrets.AUTHELIA_LDAP_PASSWORD }}
+          LLDAP_ADMIN_PASSWORD: ${{ secrets.LLDAP_ADMIN_PASSWORD }}
+          LLDAP_JWT_SECRET: ${{ secrets.LLDAP_JWT_SECRET }}
