@@ -20,7 +20,11 @@
 
 - name: Set Secrets
   ansible.builtin.set_fact:
-    "{{ item }}": "{{ lookup('ansible.builtin.env', item) }}"
+    "{{ item }}": >-
+      {{
+        vars[item]
+        | default(lookup('ansible.builtin.env', item))
+      }}
   delegate_to: localhost
   loop:
     - AUTHELIA_JWT_SECRET
