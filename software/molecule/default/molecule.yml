@@ -30,6 +30,17 @@ provisioner:
       instance:
         letsencrypt: no
         base_domain: me.localhost
+        AUTHELIA_JWT_SECRET: fb1a43b2e482e8f9765f
+        AUTHELIA_SESSION_SECRET: e338c37cd5f1fb9814a3
+        AUTHELIA_POSTGRES_PASSWORD: d0e1ad8acc7c1fca48e0
+        AUTHELIA_STORAGE_ENCRYPTION_KEY: "\
+          ac4b5d019939f70e94e587ea5318028f\
+          c5491075ff4e93317f3d10136a018280\
+          7c394a154282e6b9211f9d4155542612\
+          70d4c37caac604fd651b57897bf79c7d"
+        AUTHELIA_LDAP_PASSWORD: 00e952e4d382050dbad2
+        LLDAP_ADMIN_PASSWORD: 00e952e4d382050dbad2
+        LLDAP_JWT_SECRET: 9dd9749227f2928c0a11
 
 verifier:
   name: ansible
