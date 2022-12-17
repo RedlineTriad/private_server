@@ -28,6 +28,13 @@
           Expected no anonymous volumes, found:
           {{ docker_anonymous_volumes }}
 
+    - name: Old Applications get Deleted
+      ansible.builtin.assert:
+        that: >-
+          'traefik/whoami'
+          not in
+          (docker_host_info.containers | map(attribute='Image'))
+
     - name: Get Docker Volume
       ansible.builtin.stat:
         path: /mnt/data/docker/volumes/traefik_letsencrypt
@@ -67,10 +74,3 @@
     - name: Test Docker Compose Application
       ansible.builtin.assert:
         that: not test_compose_app.stat.exists
-
-    - name: Test Docker Compose Application
-      ansible.builtin.assert:
-        that: >-
-          'traefik/whoami'
-          not in
-          (docker_host_info.containers | map(attribute='Image'))
