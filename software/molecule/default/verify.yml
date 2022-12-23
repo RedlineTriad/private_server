@@ -56,9 +56,11 @@
 
     - name: Get Authelia Reverse Proxy Response
       ansible.builtin.uri:
-        url: https://auth.me.localhost/
+        url: https://localhost/
         return_content: yes
         validate_certs: no
+        headers:
+          Host: auth.me.localhost
       register: auth_response
 
     - name: Verify Authelia Reverse Proxy Response
