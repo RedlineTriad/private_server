@@ -3,7 +3,7 @@ version: '2.4'
 
 services:
   frontend:
-    image: grocy/frontend:v3.3.2-3
+    image: grocy/frontend:v3.3.2-4
     restart: unless-stopped
     read_only: true
     tmpfs:
@@ -19,7 +19,7 @@ services:
       - traefik.http.routers.grocy.middlewares=authelia@docker
 
   backend:
-    image: grocy/backend:v3.3.2-3
+    image: grocy/backend:v3.3.2-4
     restart: unless-stopped
     read_only: true
     tmpfs:
