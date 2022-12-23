@@ -21,10 +21,12 @@ platforms:
       - extra_qemu_args = %w(-vga std $QEMU_ARGS)
 provisioner:
   name: ansible
+  config_options:
+    ssh_connection:
+      pipelining: true
+      ssh_args: -o ControlMaster=auto -o ControlPersist=60s
   playbooks:
     side_effect: install_old_app.yml
-  env:
-    ANSIBLE_PIPELINING: "True"
   inventory:
     host_vars:
       instance:
