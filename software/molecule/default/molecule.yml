@@ -32,17 +32,41 @@ provisioner:
       instance:
         letsencrypt: no
         base_domain: me.localhost
-        AUTHELIA_JWT_SECRET: fb1a43b2e482e8f9765f
-        AUTHELIA_SESSION_SECRET: e338c37cd5f1fb9814a3
-        AUTHELIA_POSTGRES_PASSWORD: d0e1ad8acc7c1fca48e0
+        AUTHELIA_JWT_SECRET: "\
+          bdc34567c36d1e9c233d7d13bf01770e\
+          02bb35bfc177c8c9f2414bcfe77c9dd3\
+          08450d1e735a48f2a249215845f12651\
+          d89a91f27b844f1a61004a40c93600a2"
+        AUTHELIA_SESSION_SECRET: "\
+          5cf859a8ee1cc48e5373f18dc21dab06\
+          943dd4cb3c4d60291b188f3945b78e8e\
+          3cf6a42ae68da90abf65d2b5b75d9e63\
+          eb8f94cf04a34aa7614ddfc27afa2a49"
+        AUTHELIA_POSTGRES_PASSWORD: "\
+          68ab281cc68fc1b6f677329e6ce97162\
+          869e09018c27a8786da6ee5499fe1b42\
+          3e916a3292665708c5a6f5dde47cf5f1\
+          edefe5258df1c4bfbb4aca4fc972ce70"
         AUTHELIA_STORAGE_ENCRYPTION_KEY: "\
           ac4b5d019939f70e94e587ea5318028f\
           c5491075ff4e93317f3d10136a018280\
           7c394a154282e6b9211f9d4155542612\
           70d4c37caac604fd651b57897bf79c7d"
-        AUTHELIA_LDAP_PASSWORD: 00e952e4d382050dbad2
-        LLDAP_ADMIN_PASSWORD: 00e952e4d382050dbad2
-        LLDAP_JWT_SECRET: 9dd9749227f2928c0a11
+        AUTHELIA_LDAP_PASSWORD: "\
+          f639278c45f1fc21370903d7bae21313\
+          fcbb642e2c1cdeed24860706490f120a\
+          4a9d811eec52ca91cca2407e56234bdb\
+          90a01c8ee88588fd491086dbdab7a300"
+        LLDAP_ADMIN_PASSWORD: "\
+          f639278c45f1fc21370903d7bae21313\
+          fcbb642e2c1cdeed24860706490f120a\
+          4a9d811eec52ca91cca2407e56234bdb\
+          90a01c8ee88588fd491086dbdab7a300"
+        LLDAP_JWT_SECRET: "\
+          21b7108b3ebd0ffb8eccb7bf5b23f3ba\
+          f86a71d6060b0a2ed5d7e69d42da3df3\
+          a10bd493140b7d33022206b7937d1fe6\
+          e5f30afbe33cc4190a6f24ee63a34ad8"
 
 verifier:
   name: ansible

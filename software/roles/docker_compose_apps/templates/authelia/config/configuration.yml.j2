@@ -41,8 +41,16 @@ storage:
     username: authelia
 
 notifier:
+{% if AUTHELIA_NOTIFIER_SMTP_PASSWORD %}
+  smtp:
+    host: smtp.migadu.com
+    port: 465
+    username: authelia@{{ base_domain }}
+    sender: "Authelia <authelia@{{ base_domain }}>"
+{% else %}
   filesystem:
     filename: /tmp/notification.txt
+{% endif%}
 
 authentication_backend:
   # Password reset through authelia works normally.
