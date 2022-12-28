@@ -1,5 +1,12 @@
 {
   "ip": "127.0.0.1",
   "ipv6": true,
-  "fixed-cidr-v6": "fddc:a418:b327::/48"
+  "fixed-cidr-v6": "fddc:a418:b327::/48",
+  "log-driver": "json-file",
+  "log-opts": {
+    "labels-regex": "^.+",
+    "tag": "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}",
+    "max-size": "10m",
+    "max-file": "3"
+  }
 }

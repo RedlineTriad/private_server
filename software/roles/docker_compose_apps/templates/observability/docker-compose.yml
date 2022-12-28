@@ -1,0 +1,74 @@
+version: "3"
+services:
+  grafana:
+    image: grafana/grafana:latest
+    ports:
+      - 3000:3000
+    volumes:
+      - ./config/grafana/datasources.yaml:/etc/grafana/provisioning/datasources/datasources.yaml
+    #  - ./config/grafana/grafana.ini:/etc/grafana/grafana.ini
+    environment:
+      GF_AUTH_ANONYMOUS_ENABLED: "true"
+      GF_AUTH_ANONYMOUS_ORG_ROLE: Admin
+      GF_AUTH_DISABLE_LOGIN_FORM: "true"
+      JAEGER_AGENT_HOST: otel-collector
+      JAEGER_ENDPOINT: http://otel-collector:14268/api/traces
+      JAEGER_TAGS: service.name=grafana
+      JAEGER_SAMPLER_TYPE: const
+      JAEGER_SAMPLER_PARAM: "1"
+
+  tempo:
+    image: grafana/tempo:latest
+    command: [ "-config.file=/etc/tempo.yaml" ]
+    volumes:
+      - ./config/tempo/tempo.yaml:/etc/tempo.yaml
+      - tempo_data:/tmp/tempo
+    environment:
+      JAEGER_AGENT_HOST: otel-collector
+      JAEGER_ENDPOINT: http://otel-collector:14268/api/traces
+      JAEGER_TAGS: service.name=tempo
+      JAEGER_SAMPLER_TYPE: const
+      JAEGER_SAMPLER_PARAM: "1"
+
+  loki:
+    image: grafana/loki:latest
+    command: [ "-config.file=/etc/loki/local-config.yaml" ]
+    environment:
+      JAEGER_AGENT_HOST: otel-collector
+      JAEGER_ENDPOINT: http://otel-collector:14268/api/traces
+      JAEGER_TAGS: service.name=loki
+      JAEGER_SAMPLER_TYPE: const
+      JAEGER_SAMPLER_PARAM: "1"
+
+  prometheus:
+    image: prom/prometheus:latest
+    command:
+      - --config.file=/etc/prometheus.yaml
+      - --web.enable-remote-write-receiver
+      - --enable-feature=exemplar-storage
+    volumes:
+      - ./config/prometheus/prometheus.yaml:/etc/prometheus.yaml
+
+  # And put them in an OTEL collector pipeline...
+  otel-collector:
+    image: otel/opentelemetry-collector:latest
+    command: [ "--config=/etc/otel-collector.yaml" ]
+    volumes:
+      - ./config/otel-collector/otel-collector.yaml:/etc/otel-collector.yaml
+
+  promtail:
+    image: grafana/promtail:latest
+    volumes:
+      - ./config/promtail/promtail.yaml:/etc/promtail/config.yaml:ro
+      - /var/lib/docker/containers/:/var/lib/docker/containers
+      - /var/run/docker.sock:/var/run/docker.sock
+    command: -config.file=/etc/promtail/config.yaml
+    environment:
+      JAEGER_AGENT_HOST: otel-collector
+      JAEGER_ENDPOINT: http://otel-collector:14268/api/traces
+      JAEGER_TAGS: service.name=promtail
+      JAEGER_SAMPLER_TYPE: const
+      JAEGER_SAMPLER_PARAM: "1"
+
+volumes:
+  tempo_data:
