@@ -1,0 +1,14 @@
+tracing:
+  endpoint: otel-collector:4317
+  sampling_fraction: 1
+  insecure: true
+
+global:
+  scrape_interval:     15s
+  evaluation_interval: 15s
+
+scrape_configs:
+  - job_name: 'otel'
+    honor_labels: true
+    static_configs:
+      - targets: [ 'otel-collector:8889' ]

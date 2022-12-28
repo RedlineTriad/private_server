@@ -1,0 +1,52 @@
+receivers:
+  otlp:
+    protocols:
+      grpc:
+  jaeger:
+    protocols:
+      thrift_http:
+  prometheus:
+    config:
+      global:
+        scrape_interval:     15s
+        evaluation_interval: 15s
+      scrape_configs:
+        - job_name: 'otel-collector'
+          static_configs:
+            - targets: [ 'localhost:8888' ]
+        - job_name: 'prometheus'
+          static_configs:
+            - targets: [ 'prometheus:9090' ]
+        - job_name: 'tempo'
+          static_configs:
+            - targets: [ 'tempo:3200' ]
+        - job_name: 'loki'
+          static_configs:
+            - targets: [ 'loki:3100' ]
+        - job_name: 'promtail'
+          static_configs:
+            - targets: [ 'promtail:9080' ]
+  docker_stats:
+processors:
+  batch:
+exporters:
+  otlp:
+    endpoint: tempo:4317
+    tls:
+      insecure: true
+  prometheus:
+    endpoint: "0.0.0.0:8889"
+service:
+  telemetry:
+    metrics:
+      level: detailed
+      address: 0.0.0.0:8888
+  pipelines:
+    traces:
+      receivers: [otlp, jaeger]
+      processors: [batch]
+      exporters: [otlp]
+    metrics:
+      receivers: [otlp, prometheus]
+      processors: [batch]
+      exporters: [prometheus]
