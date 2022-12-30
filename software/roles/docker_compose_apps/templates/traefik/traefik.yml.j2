@@ -1,5 +1,6 @@
-experimental:
-  http3: true
+global:
+  sendAnonymousUsage: false
+  checkNewVersion: false
 
 entryPoints:
   http:
@@ -29,3 +30,21 @@ providers:
   docker:
     exposedByDefault: false
     network: rproxy
+
+tracing:
+  openTelemetry:
+    address: http://otel-collector:4318
+    insecure: true
+    grpc: {}
+
+log:
+  format: json
+
+# metrics:
+#   openTelemetry:
+#     address: otel-collector:4318
+#     insecure: true
+#     grpc: {}
+#     addEntryPointsLabels: true
+#     addRoutersLabels: true
+#     addServicesLabels: true
