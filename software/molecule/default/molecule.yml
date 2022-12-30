@@ -15,6 +15,7 @@ platforms:
       qemu_dir: /usr/bin/
       arch: x86_64
       machine: q35
+      memory: 2048
       cpu: max
       net_device: virtio-net-pci
     provider_raw_config_args:
