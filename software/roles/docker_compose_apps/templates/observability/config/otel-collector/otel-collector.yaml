@@ -26,25 +26,10 @@ receivers:
         - job_name: 'promtail'
           static_configs:
             - targets: [ 'promtail:9080' ]
-  docker_stats:
-    collection_interval: 15s
-  hostmetrics:
-    root_path: /hostfs
-    collection_interval: 15s
-    scrapers:
-      cpu:
-      disk:
-      load:
-      filesystem:
-      memory:
-      network:
-      paging:
-      processes:
-      process:
-        mute_process_name_error: true
 
 processors:
   batch:
+
 exporters:
   otlp:
     endpoint: tempo:4317
@@ -52,6 +37,7 @@ exporters:
       insecure: true
   prometheus:
     endpoint: "0.0.0.0:8889"
+
 service:
   telemetry:
     metrics:
@@ -63,6 +49,6 @@ service:
       processors: [batch]
       exporters: [otlp]
     metrics:
-      receivers: [otlp, prometheus, hostmetrics, docker_stats]
+      receivers: [otlp, prometheus]
       processors: [batch]
       exporters: [prometheus]
