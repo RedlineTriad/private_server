@@ -7,8 +7,6 @@ services:
       - grafana_data:/var/lib/grafana
       - ./config/grafana/grafana.ini:/etc/grafana/grafana.ini
     environment:
-      GF_AUTH_ANONYMOUS_ENABLED: "true"
-      GF_AUTH_ANONYMOUS_ORG_ROLE: Admin
       GF_AUTH_DISABLE_LOGIN_FORM: "true"
       JAEGER_AGENT_HOST: otel-collector
       JAEGER_ENDPOINT: http://otel-collector:14268/api/traces
@@ -71,13 +69,10 @@ services:
 
   otel-collector:
     image: otel/opentelemetry-collector-contrib:latest
-    command: [ "--config=/etc/otel-collector.yaml", "--feature-gates=receiver.dockerstats.useScraperV2" ]
-    user: 0:0
+    command: [ "--config=/etc/otel-collector.yaml" ]
     read_only: true
     volumes:
       - ./config/otel-collector/otel-collector.yaml:/etc/otel-collector.yaml:ro
-      - /var/run/docker.sock:/var/run/docker.sock
-      - /:/hostfs
     networks:
       - internal
       - observability
@@ -112,4 +107,4 @@ networks:
   observability:
     name: observability
   rproxy:
-    external: true
+    name: rproxy

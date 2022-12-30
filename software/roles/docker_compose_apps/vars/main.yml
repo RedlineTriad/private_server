@@ -1,7 +1,7 @@
 ---
 apps:
-  - traefik
   - observability
+  - traefik
   - lldap
   - authelia
   - grocy
