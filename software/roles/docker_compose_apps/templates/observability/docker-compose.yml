@@ -5,7 +5,8 @@ services:
     ports:
       - 3000:3000
     volumes:
-      - ./config/grafana/datasources.yaml:/etc/grafana/provisioning/datasources/datasources.yaml
+      - ./config/grafana/datasources.yaml:/etc/grafana/provisioning/datasources/datasources.yaml:ro
+      - grafana_data:/var/lib/grafana
     #  - ./config/grafana/grafana.ini:/etc/grafana/grafana.ini
     environment:
       GF_AUTH_ANONYMOUS_ENABLED: "true"
@@ -21,8 +22,9 @@ services:
     image: grafana/tempo:latest
     command: [ "-config.file=/etc/tempo.yaml" ]
     volumes:
-      - ./config/tempo/tempo.yaml:/etc/tempo.yaml
+      - ./config/tempo/tempo.yaml:/etc/tempo.yaml:ro
       - tempo_data:/tmp/tempo
+    read_only: true
     environment:
       JAEGER_AGENT_HOST: otel-collector
       JAEGER_ENDPOINT: http://otel-collector:14268/api/traces
@@ -33,6 +35,9 @@ services:
   loki:
     image: grafana/loki:latest
     command: [ "-config.file=/etc/loki/local-config.yaml" ]
+    read_only: true
+    volumes:
+      - loki_data:/loki
     environment:
       JAEGER_AGENT_HOST: otel-collector
       JAEGER_ENDPOINT: http://otel-collector:14268/api/traces
@@ -46,23 +51,30 @@ services:
       - --config.file=/etc/prometheus.yaml
       - --web.enable-remote-write-receiver
       - --enable-feature=exemplar-storage
+    read_only: true
     volumes:
-      - ./config/prometheus/prometheus.yaml:/etc/prometheus.yaml
+      - ./config/prometheus/prometheus.yaml:/etc/prometheus.yaml:ro
+      - prometheus_data:/prometheus
 
-  # And put them in an OTEL collector pipeline...
   otel-collector:
-    image: otel/opentelemetry-collector:latest
-    command: [ "--config=/etc/otel-collector.yaml" ]
+    image: otel/opentelemetry-collector-contrib:latest
+    command: [ "--config=/etc/otel-collector.yaml", "--feature-gates=receiver.dockerstats.useScraperV2" ]
+    user: 0:0
+    read_only: true
     volumes:
-      - ./config/otel-collector/otel-collector.yaml:/etc/otel-collector.yaml
+      - ./config/otel-collector/otel-collector.yaml:/etc/otel-collector.yaml:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /:/hostfs
 
   promtail:
     image: grafana/promtail:latest
+    command: -config.file=/etc/promtail/config.yaml
+    read_only: true
     volumes:
       - ./config/promtail/promtail.yaml:/etc/promtail/config.yaml:ro
       - /var/lib/docker/containers/:/var/lib/docker/containers
       - /var/run/docker.sock:/var/run/docker.sock
-    command: -config.file=/etc/promtail/config.yaml
+      - promtail_positions:/var/promtail
     environment:
       JAEGER_AGENT_HOST: otel-collector
       JAEGER_ENDPOINT: http://otel-collector:14268/api/traces
@@ -71,4 +83,8 @@ services:
       JAEGER_SAMPLER_PARAM: "1"
 
 volumes:
+  grafana_data:
+  prometheus_data:
+  loki_data:
   tempo_data:
+  promtail_positions:
