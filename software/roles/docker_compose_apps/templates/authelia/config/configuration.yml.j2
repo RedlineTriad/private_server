@@ -18,6 +18,8 @@ totp:
 access_control:
   default_policy: deny
   rules:
+    - domain: grafana.{{ base_domain }}
+      policy: one_factor
     - domain: ldap.{{ base_domain }}
       policy: one_factor
     - domain: grocy.{{ base_domain }}

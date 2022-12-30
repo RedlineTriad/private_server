@@ -2,12 +2,10 @@ version: "3"
 services:
   grafana:
     image: grafana/grafana:latest
-    ports:
-      - 3000:3000
     volumes:
       - ./config/grafana/datasources.yaml:/etc/grafana/provisioning/datasources/datasources.yaml:ro
       - grafana_data:/var/lib/grafana
-    #  - ./config/grafana/grafana.ini:/etc/grafana/grafana.ini
+      - ./config/grafana/grafana.ini:/etc/grafana/grafana.ini
     environment:
       GF_AUTH_ANONYMOUS_ENABLED: "true"
       GF_AUTH_ANONYMOUS_ORG_ROLE: Admin
@@ -17,6 +15,15 @@ services:
       JAEGER_TAGS: service.name=grafana
       JAEGER_SAMPLER_TYPE: const
       JAEGER_SAMPLER_PARAM: "1"
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.grafana.rule=Host(`grafana.$BASE_DOMAIN`)
+      - traefik.http.routers.grafana.entrypoints=https
+      - traefik.http.routers.grafana.tls.certResolver=letsencrypt
+      - traefik.http.routers.grafana.middlewares=authelia@docker
+    networks:
+      - internal
+      - rproxy
 
   tempo:
     image: grafana/tempo:latest
@@ -31,6 +38,8 @@ services:
       JAEGER_TAGS: service.name=tempo
       JAEGER_SAMPLER_TYPE: const
       JAEGER_SAMPLER_PARAM: "1"
+    networks:
+      - internal
 
   loki:
     image: grafana/loki:latest
@@ -44,6 +53,8 @@ services:
       JAEGER_TAGS: service.name=loki
       JAEGER_SAMPLER_TYPE: const
       JAEGER_SAMPLER_PARAM: "1"
+    networks:
+      - internal
 
   prometheus:
     image: prom/prometheus:latest
@@ -55,6 +66,8 @@ services:
     volumes:
       - ./config/prometheus/prometheus.yaml:/etc/prometheus.yaml:ro
       - prometheus_data:/prometheus
+    networks:
+      - internal
 
   otel-collector:
     image: otel/opentelemetry-collector-contrib:latest
@@ -65,6 +78,9 @@ services:
       - ./config/otel-collector/otel-collector.yaml:/etc/otel-collector.yaml:ro
       - /var/run/docker.sock:/var/run/docker.sock
       - /:/hostfs
+    networks:
+      - internal
+      - observability
 
   promtail:
     image: grafana/promtail:latest
@@ -81,6 +97,8 @@ services:
       JAEGER_TAGS: service.name=promtail
       JAEGER_SAMPLER_TYPE: const
       JAEGER_SAMPLER_PARAM: "1"
+    networks:
+      - internal
 
 volumes:
   grafana_data:
@@ -88,3 +106,10 @@ volumes:
   loki_data:
   tempo_data:
   promtail_positions:
+
+networks:
+  internal:
+  observability:
+    name: observability
+  rproxy:
+    external: true
