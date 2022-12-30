@@ -13,6 +13,13 @@ services:
       - ./traefik.yml:/etc/traefik/traefik.yml:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - letsencrypt:/letsencrypt
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.traefik.service=api@internal
+      - traefik.http.routers.traefik.rule=Host(`traefik.$BASE_DOMAIN`)
+      - traefik.http.routers.traefik.entrypoints=https
+      - traefik.http.routers.traefik.tls.certResolver=letsencrypt
+      - traefik.http.routers.traefik.middlewares=authelia@docker
     networks:
       - rproxy
       - observability
