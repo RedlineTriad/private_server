@@ -1,7 +1,7 @@
 version: "3"
 services:
   grafana:
-    image: grafana/grafana:latest
+    image: grafana/grafana-oss:9.3.2
     restart: unless-stopped
     volumes:
       - ./config/grafana/datasources.yaml:/etc/grafana/provisioning/datasources/datasources.yaml:ro
@@ -25,7 +25,7 @@ services:
       - rproxy
 
   tempo:
-    image: grafana/tempo:latest
+    image: grafana/tempo:1.5.0
     command: [ "-config.file=/etc/tempo.yaml" ]
     restart: unless-stopped
     volumes:
@@ -42,7 +42,7 @@ services:
       - internal
 
   loki:
-    image: grafana/loki:latest
+    image: grafana/loki:2.7.1
     command: [ "-config.file=/etc/loki/local-config.yaml" ]
     restart: unless-stopped
     read_only: true
@@ -58,7 +58,7 @@ services:
       - internal
 
   prometheus:
-    image: prom/prometheus:latest
+    image: prom/prometheus:v2.41.0
     command:
       - --config.file=/etc/prometheus.yaml
       - --web.enable-remote-write-receiver
@@ -72,7 +72,7 @@ services:
       - internal
 
   otel-collector:
-    image: otel/opentelemetry-collector-contrib:latest
+    image: otel/opentelemetry-collector-contrib:0.68.0
     command: [ "--config=/etc/otel-collector.yaml" ]
     restart: unless-stopped
     read_only: true
@@ -83,7 +83,7 @@ services:
       - observability
 
   promtail:
-    image: grafana/promtail:latest
+    image: grafana/promtail:2.7.1
     command: -config.file=/etc/promtail/config.yaml
     restart: unless-stopped
     read_only: true
