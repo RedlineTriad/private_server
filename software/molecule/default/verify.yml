@@ -68,6 +68,25 @@
         that: >-
           'content="Authelia' in auth_response.content
 
+    - name: Verify HTTP Transports
+      ansible.builtin.command:
+        cmd: curl --silent {{ item[0] }} {{ item[1] }} http://auth.me.localhost/
+      changed_when: false
+      loop: |
+        {{
+          [
+            "--http1.0",
+            "--http1.1",
+            "--http2"
+          ]
+          | product([
+            "--ipv4",
+            "--ipv6"
+          ])
+        }}
+      tags:
+        - skip_ansible_lint
+
     - name: Get Test Docker Compose Application
       ansible.builtin.stat:
         path: /srv/test_app
