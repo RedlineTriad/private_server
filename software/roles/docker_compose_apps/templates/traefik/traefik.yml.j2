@@ -13,8 +13,6 @@ entryPoints:
 
   https:
     address: :443
-
-  name:
     http3: {}
 
 certificatesResolvers:
@@ -33,21 +31,21 @@ providers:
 
 tracing:
   openTelemetry:
-    address: http://otel-collector:4318
+    address: http://otel-collector:4317
     insecure: true
     grpc: {}
 
 log:
   format: json
 
-# metrics:
-#   openTelemetry:
-#     address: otel-collector:4318
-#     insecure: true
-#     grpc: {}
-#     addEntryPointsLabels: true
-#     addRoutersLabels: true
-#     addServicesLabels: true
+metrics:
+  openTelemetry:
+    address: otel-collector:4317
+    insecure: true
+    grpc: {}
+    addEntryPointsLabels: true
+    addRoutersLabels: true
+    addServicesLabels: true
 
 api:
   dashboard: true
