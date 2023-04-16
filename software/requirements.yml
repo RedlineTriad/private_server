@@ -2,3 +2,6 @@
 collections:
   - name: community.general
   - name: community.docker
+
+roles:
+  - name: m3nu.ansible_role_borgbackup
