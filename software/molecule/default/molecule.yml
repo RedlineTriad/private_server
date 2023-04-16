@@ -68,6 +68,12 @@ provisioner:
           f86a71d6060b0a2ed5d7e69d42da3df3\
           a10bd493140b7d33022206b7937d1fe6\
           e5f30afbe33cc4190a6f24ee63a34ad8"
+        BORG_BACKUP_REPOSITORY: /var/local.borg
+        BORG_BACKUP_ENCRYPTION_PASS: "\
+          615726bf9759a91bb955b8061a77e04c\
+          a73f7755c812a4dfe002ad3ae8fcf5a4\
+          c0cd229ba7bef4b78029d23992c4f85a\
+          dd62a1764edbbcef2de4d56bf913e9c9"
 
 verifier:
   name: ansible

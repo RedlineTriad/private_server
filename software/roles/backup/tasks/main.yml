@@ -1,0 +1,26 @@
+---
+- name: Setup Automatic Backup
+  ansible.builtin.include_role:
+    name: m3nu.ansible_role_borgbackup
+  vars:
+    borg_encryption_passphrase: "{{ BORG_BACKUP_ENCRYPTION_PASS }}"
+    borg_repository: "{{ BORG_BACKUP_REPOSITORY }}"
+    borgmatic_timer: systemd
+    borg_source_directories:
+      - /mnt/data
+    borg_retention_policy:
+      keep_hourly: 3
+      keep_daily: 7
+      keep_weekly: 4
+      keep_monthly: 6
+
+- name: Check if repository already exists
+  ansible.builtin.stat:
+    path: "{{ BORG_BACKUP_REPOSITORY }}"
+  register: repo_folder
+
+- name: Init Repository
+  ansible.builtin.command:
+    cmd: borgmatic init --encryption repokey-blake2
+  changed_when: true
+  when: not repo_folder.stat.exists
