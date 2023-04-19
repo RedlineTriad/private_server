@@ -24,3 +24,8 @@
     cmd: borgmatic init --encryption repokey-blake2
   changed_when: true
   when: not repo_folder.stat.exists
+
+- name: Create Backup
+  ansible.builtin.systemd:
+    name: borgmatic.service
+    state: started

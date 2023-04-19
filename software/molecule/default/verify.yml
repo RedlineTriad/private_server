@@ -5,6 +5,26 @@
   hosts: all
   gather_facts: false
   tasks:
+    - name: Get Backup File
+      ansible.builtin.stat:
+        path: "{{ BORG_BACKUP_REPOSITORY }}"
+      register: backup_path
+
+    - name: Check that Backup File Exists
+      ansible.builtin.assert:
+        that: backup_path.stat.exists
+
+    - name: Get Backups
+      ansible.builtin.command:
+        cmd: borgmatic list --json
+      changed_when: false
+      register: backup_list
+      become: true
+
+    - name: Check that a Backup was Created
+      ansible.builtin.assert:
+        that: ((backup_list.stdout | from_json)[0].archives | length) == 1
+
     - name: Get Docker Version
       community.docker.docker_host_info:
         volumes: yes
