@@ -2,3 +2,4 @@
 - name: Update Repositories
   ansible.builtin.apt:
     update_cache: yes
+  changed_when: false
