@@ -5,7 +5,6 @@
   vars:
     borg_encryption_passphrase: "{{ BORG_BACKUP_ENCRYPTION_PASS }}"
     borg_repository: "{{ BORG_BACKUP_REPOSITORY }}"
-    borgmatic_timer: systemd
     borg_source_directories:
       - /mnt/data
     borg_retention_policy:
@@ -13,6 +12,9 @@
       keep_daily: 7
       keep_weekly: 4
       keep_monthly: 6
+    borgmatic_timer: systemd
+    borgmatic_timer_hour: '*'
+    borgmatic_timer_minute: 0
 
 - name: Check if repository already exists
   ansible.builtin.stat:
@@ -24,3 +26,10 @@
     cmd: borgmatic init --encryption repokey-blake2
   changed_when: true
   when: not repo_folder.stat.exists
+
+- name: Enable Backup Timer
+  ansible.builtin.systemd:
+    name: borgmatic.timer
+    state: started
+    enabled: yes
+    daemon_reload: true
