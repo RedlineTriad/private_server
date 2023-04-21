@@ -69,7 +69,7 @@ jobs:
         run: ansible-galaxy install -r requirements.yml
 
       - name: Configure Server with Ansible
-        run: ansible-playbook -i hosts --extra-vars "base_domain=pascal.build" site.yml
+        run: ansible-playbook site.yml --extra-vars "base_domain=pascal.build"
         env:
           ANSIBLE_FORCE_COLOR: 1
           ANSIBLE_ASYNC_DIR: /tmp/.ansible_async
