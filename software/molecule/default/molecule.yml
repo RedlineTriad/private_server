@@ -22,8 +22,6 @@ platforms:
       - extra_qemu_args = %w(-vga std $QEMU_ARGS)
 provisioner:
   name: ansible
-  playbooks:
-    side_effect: install_old_app.yml
   inventory:
     host_vars:
       instance:

@@ -23,3 +23,12 @@
     - name: Start Docker Compose Application
       community.docker.docker_compose:
         project_src: /srv/test_app
+
+- name: Run backup as if timer fired
+  hosts: all
+  become: true
+  tasks:
+    - name: Create Backup
+      ansible.builtin.systemd:
+        name: borgmatic.service
+        state: started
