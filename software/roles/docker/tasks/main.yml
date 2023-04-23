@@ -36,20 +36,20 @@
 
 - name: Create Docker Data Directory
   ansible.builtin.file:
-    path: /mnt/data/docker
+    path: "{{ data_directory}}/docker"
     state: directory
     mode: 0710
 
 - name: Create Docker Data Volume Directory
   ansible.builtin.file:
-    path: /mnt/data/docker/volumes
+    path: "{{ data_directory}}/docker/volumes"
     state: directory
     mode: '0701'
 
 - name: Create Symlink to Store Volumes Separatly
   ansible.builtin.file:
     path: /var/lib/docker/volumes
-    src: /mnt/data/docker/volumes
+    src: "{{ data_directory }}/docker/volumes"
     state: link
     mode: '0701'
     force: yes
