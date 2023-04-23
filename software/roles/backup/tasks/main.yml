@@ -17,15 +17,20 @@
     borgmatic_timer_minute: 0
 
 - name: Check if repository already exists
-  ansible.builtin.stat:
-    path: "{{ BORG_BACKUP_REPOSITORY }}"
-  register: repo_folder
+  ansible.builtin.command:
+    cmd: borgmatic rlist
+  changed_when: false
+  failed_when: not repo_list.rc in [0, 1]
+  register: repo_list
 
 - name: Init Repository
   ansible.builtin.command:
     cmd: borgmatic init --encryption repokey-blake2
   changed_when: true
-  when: not repo_folder.stat.exists
+  when: >
+    "Repository " ~ BORG_BACKUP_REPOSITORY ~ " does not exist."
+    in
+    repo_list.stdout
 
 - name: Enable Backup Timer
   ansible.builtin.systemd:
