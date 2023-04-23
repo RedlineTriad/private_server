@@ -3,7 +3,6 @@
   ansible.builtin.apt:
     name: aptitude
     state: present
-    update_cache: true
 
 - name: Install required system packages
   ansible.builtin.apt:
@@ -18,7 +17,6 @@
       - virtualenv
       - python3-setuptools
     state: present
-    update_cache: true
 
 - name: Add Docker GPG apt Key
   ansible.builtin.apt_key:
