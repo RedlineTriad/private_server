@@ -57,7 +57,7 @@
 
     - name: Get Docker Volume
       ansible.builtin.stat:
-        path: /mnt/data/docker/volumes/traefik_letsencrypt
+        path: "{{ data_directory }}/docker/volumes/traefik_letsencrypt"
       register: docker_volume
       become: true
 

@@ -1,1 +1,1 @@
-pascal.build ansible_user=root
+pascal.build ansible_user=root data_directory=/mnt/data

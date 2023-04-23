@@ -25,6 +25,7 @@ provisioner:
   inventory:
     host_vars:
       instance:
+        data_directory: /mnt/data
         letsencrypt: no
         base_domain: me.localhost
         AUTHELIA_JWT_SECRET: "\
