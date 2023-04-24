@@ -7,7 +7,7 @@
   tasks:
     - name: Get Backup File
       ansible.builtin.stat:
-        path: "{{ BORG_BACKUP_REPOSITORY }}"
+        path: "/var/local.borg"
       register: backup_path
 
     - name: Check that Backup File Exists
