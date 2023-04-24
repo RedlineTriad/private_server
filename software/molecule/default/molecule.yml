@@ -63,12 +63,24 @@ provisioner:
           f86a71d6060b0a2ed5d7e69d42da3df3\
           a10bd493140b7d33022206b7937d1fe6\
           e5f30afbe33cc4190a6f24ee63a34ad8"
-        BORG_BACKUP_REPOSITORY: /var/local.borg
+        BORG_BACKUP_REPOSITORY: ssh://root@localhost/var/local.borg
         BORG_BACKUP_ENCRYPTION_PASS: "\
           615726bf9759a91bb955b8061a77e04c\
           a73f7755c812a4dfe002ad3ae8fcf5a4\
           c0cd229ba7bef4b78029d23992c4f85a\
           dd62a1764edbbcef2de4d56bf913e9c9"
+        SSH_PRIVATE_KEY: |
+          -----BEGIN OPENSSH PRIVATE KEY-----
+          b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc2gtZW
+          QyNTUxOQAAACALWzmsqOiX0W80IoqgHjDSPMaFWeaNThKku6YTOtl2iAAAAJgwXdHJMF3R
+          yQAAAAtzc2gtZWQyNTUxOQAAACALWzmsqOiX0W80IoqgHjDSPMaFWeaNThKku6YTOtl2iA
+          AAAEAwmKHHOrB4ChHV2W0hzlOremzE1vqwe06AYPd7XJqDkQtbOayo6JfRbzQiiqAeMNI8
+          xoVZ5o1OEqS7phM62XaIAAAADnJvb3RAbG9jYWxob3N0AQIDBAUGBw==
+          -----END OPENSSH PRIVATE KEY-----
+        SSH_PUBLIC_KEY: >
+          ssh-ed25519
+          AAAAC3NzaC1lZDI1NTE5AAAAIAtbOayo6JfRbzQiiqAeMNI8xoVZ5o1OEqS7phM62XaI
+          root@localhost
 
 verifier:
   name: ansible

@@ -36,13 +36,13 @@
 
 - name: Create Docker Data Directory
   ansible.builtin.file:
-    path: "{{ data_directory}}/docker"
+    path: "{{ data_directory }}/docker"
     state: directory
     mode: 0710
 
 - name: Create Docker Data Volume Directory
   ansible.builtin.file:
-    path: "{{ data_directory}}/docker/volumes"
+    path: "{{ data_directory }}/docker/volumes"
     state: directory
     mode: '0701'
 

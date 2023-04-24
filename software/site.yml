@@ -2,6 +2,7 @@
 - name: Setup Server
   hosts: all
   roles:
+    - ssh_credentials
     - update
     - load_secrets
     - backup
