@@ -6,15 +6,18 @@
     mode: 0600
     remote_src: yes
 
-- name: Get localhost fingerprint
+- name: Get backup server fingerprint
   ansible.builtin.command:
-    cmd: ssh-keyscan -t ed25519 localhost
+    cmd: >
+      ssh-keyscan
+      -t ed25519
+      {{ BORG_BACKUP_REPOSITORY | urlsplit("hostname") }}
   changed_when: false
-  register: localhost_fingerprint
+  register: fingerprint
 
-- name: Install localhost fingerprint
+- name: Install backup server fingerprint
   ansible.builtin.lineinfile:
-    line: "{{ localhost_fingerprint.stdout }}"
+    line: "{{ fingerprint.stdout }}"
     dest: ~/.ssh/known_hosts
     mode: 0600
     create: true
