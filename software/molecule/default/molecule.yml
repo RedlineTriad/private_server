@@ -69,6 +69,7 @@ provisioner:
           a73f7755c812a4dfe002ad3ae8fcf5a4\
           c0cd229ba7bef4b78029d23992c4f85a\
           dd62a1764edbbcef2de4d56bf913e9c9"
+        BORG_BACKUP_FINGERPRINT: "trust"
         SSH_PRIVATE_KEY: |
           -----BEGIN OPENSSH PRIVATE KEY-----
           b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc2gtZW

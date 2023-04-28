@@ -7,11 +7,12 @@
       {{ BORG_BACKUP_REPOSITORY | urlsplit("hostname") }}
   changed_when: false
   register: fingerprint
+  when: BORG_BACKUP_FINGERPRINT == "trust"
 
 - name: Install backup server fingerprint
   ansible.builtin.known_hosts:
     name: "{{ BORG_BACKUP_REPOSITORY | urlsplit('hostname') }}"
-    key: "{{ fingerprint.stdout }}"
+    key: "{{ fingerprint.stdout | default(BORG_BACKUP_FINGERPRINT) }}"
 
 - name: Setup Automatic Backup
   ansible.builtin.include_role:
