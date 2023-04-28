@@ -1,11 +1,4 @@
 ---
-- name: Make it so we can backup to localhost
-  ansible.builtin.copy:
-    src: ~/.ssh/id_ed25519.pub
-    dest: ~/.ssh/authorized_keys
-    mode: 0600
-    remote_src: yes
-
 - name: Get backup server fingerprint
   ansible.builtin.command:
     cmd: >
@@ -16,11 +9,9 @@
   register: fingerprint
 
 - name: Install backup server fingerprint
-  ansible.builtin.lineinfile:
-    line: "{{ fingerprint.stdout }}"
-    dest: ~/.ssh/known_hosts
-    mode: 0600
-    create: true
+  ansible.builtin.known_hosts:
+    name: "{{ BORG_BACKUP_REPOSITORY | urlsplit('hostname') }}"
+    key: "{{ fingerprint.stdout }}"
 
 - name: Setup Automatic Backup
   ansible.builtin.include_role:

@@ -24,6 +24,9 @@
     - name: Check that a Backup was Created
       ansible.builtin.assert:
         that: ((backup_list.stdout | from_json)[0].archives | length) == 1
+        fail_msg: |
+          Did not find exactly one archive in:
+          {{ backup_list.stdout | from_json | to_nice_json }}
 
     - name: Get Docker Version
       community.docker.docker_host_info:
