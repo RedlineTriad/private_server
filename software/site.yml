@@ -2,9 +2,9 @@
 - name: Setup Server
   hosts: all
   roles:
+    - load_secrets
     - ssh_credentials
     - update
-    - load_secrets
     - backup
     - docker
     - docker_daemon
