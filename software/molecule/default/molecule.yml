@@ -82,6 +82,11 @@ provisioner:
           ssh-ed25519
           AAAAC3NzaC1lZDI1NTE5AAAAIAtbOayo6JfRbzQiiqAeMNI8xoVZ5o1OEqS7phM62XaI
           root@localhost
+        SSH_AUTHORIZED_KEYS:
+          - >
+            ssh-ed25519
+            AAAAC3NzaC1lZDI1NTE5AAAAIAtbOayo6JfRbzQiiqAeMNI8xoVZ5o1OEqS7phM62XaI
+            root@localhost
 
 verifier:
   name: ansible
