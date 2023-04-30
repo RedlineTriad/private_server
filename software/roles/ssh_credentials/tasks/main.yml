@@ -17,7 +17,8 @@
     dest: ~/.ssh/id_ed25519.pub
     mode: 0600
 
-- name: Allow SSH to self
+- name: Add Authorized Keys
   ansible.posix.authorized_key:
-    key: "{{ SSH_PUBLIC_KEY }}"
+    key: "{{ item }}"
     user: root
+  loop: "{{ SSH_AUTHORIZED_KEYS | default([]) }}"
