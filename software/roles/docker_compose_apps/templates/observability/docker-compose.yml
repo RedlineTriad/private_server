@@ -91,6 +91,8 @@ services:
       - ./config/promtail/promtail.yaml:/etc/promtail/config.yaml:ro
       - /var/lib/docker/containers/:/var/lib/docker/containers
       - /var/run/docker.sock:/var/run/docker.sock
+      - /var/log/journal:/var/log/journal:ro
+      - /run/log/journal:/run/log/journal:ro
       - promtail_positions:/var/promtail
     environment:
       JAEGER_AGENT_HOST: otel-collector
