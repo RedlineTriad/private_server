@@ -20,12 +20,25 @@ access_control:
   rules:
     - domain: ldap.{{ base_domain }}
       policy: one_factor
+      subject:
+        - 'group:lldap_admin'
     - domain: grocy.{{ base_domain }}
       policy: one_factor
+      subject:
+        - 'group:admin'
     - domain: traefik.{{ base_domain }}
       policy: one_factor
+      subject:
+        - 'group:admin'
     - domain: grafana.{{ base_domain }}
       policy: one_factor
+      subject:
+        - 'group:admin'
+    - domain: photoprism.{{ base_domain }}
+      policy: one_factor
+      subject:
+        - 'group:admin'
+        - 'group:photoprism'
 
 session:
   name: session
