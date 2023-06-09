@@ -63,6 +63,11 @@ provisioner:
           f86a71d6060b0a2ed5d7e69d42da3df3\
           a10bd493140b7d33022206b7937d1fe6\
           e5f30afbe33cc4190a6f24ee63a34ad8"
+        PHOTOPRISM_STORAGE_POSTGRES_PASSWORD: "\
+          09e0a7d509f555570029fe92b2806146\
+          3e6a360dbd1797d9a64b86e6082aa1f9\
+          5e16ef8a9eb784f122a08d73fde1cf67\
+          f236e66b569dec85c64f0d716e5e2797"
         BORG_BACKUP_REPOSITORY: ssh://root@localhost/var/local.borg
         BORG_BACKUP_ENCRYPTION_PASS: "\
           615726bf9759a91bb955b8061a77e04c\

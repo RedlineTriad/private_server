@@ -37,8 +37,6 @@ services:
     ## https://docs.photoprism.app/getting-started/troubleshooting/#fatal-server-errors
     # restart: unless-stopped
     stop_grace_period: 10s
-    ports:
-      - "2342:2342" # HTTP port (host:container)
     environment:
     #   PHOTOPRISM_ADMIN_USER: "admin"                 # admin login username
     #   PHOTOPRISM_ADMIN_PASSWORD: $PHOTOPRISM_STORAGE_ADMIN_PASSWORD          # initial admin password (8-72 characters)
@@ -100,6 +98,15 @@ services:
       # - "/example/family:/photoprism/originals/family" # *Additional* media folders can be mounted like this
       # - "~/Import:/photoprism/import"                  # *Optional* base folder from which files can be imported to originals
       - "photo_storage:/photoprism/storage"                  # *Writable* storage folder for cache, database, and sidecar files (DO NOT REMOVE)
+    networks:
+      - internal
+      - rproxy
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.photoprism.rule=Host(`photoprism.$BASE_DOMAIN`)
+      - traefik.http.routers.photoprism.entrypoints=https
+      - traefik.http.routers.photoprism.tls.certResolver=letsencrypt
+      - traefik.http.routers.photoprism.middlewares=authelia@docker
 
   db:
     image: postgres:15.1-alpine3.16
@@ -114,9 +121,14 @@ services:
     tmpfs:
       - /run
     networks:
-      - default
+      - internal
 
 volumes:
   photo_originals:
   photo_storage:
   db_data:
+
+networks:
+  internal:
+  rproxy:
+    name: rproxy
