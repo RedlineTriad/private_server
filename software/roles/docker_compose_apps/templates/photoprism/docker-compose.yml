@@ -29,7 +29,7 @@ version: '3.5'
 services:
   photoprism:
     ## Use photoprism/photoprism:preview for testing preview builds:
-    image: photoprism/photoprism:230513-ce
+    image: photoprism/photoprism:230607-ce
     restart: unless-stopped
     read_only: true
     ## Don't enable automatic restarts until PhotoPrism has been properly configured and tested!
