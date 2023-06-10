@@ -1,5 +1,6 @@
 resource "cloudflare_zone" "personal_domain" {
-  zone = var.server_domain_zone
+  zone       = var.server_domain_zone
+  account_id = var.cloudflare_account_id
   lifecycle {
     prevent_destroy = true
   }
