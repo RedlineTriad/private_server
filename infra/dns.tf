@@ -34,7 +34,7 @@ resource "cloudflare_record" "aliases" {
   for_each = toset(local.subdomains)
   zone_id  = cloudflare_zone.personal_domain.id
   name     = each.key
-  value    = "@"
+  value    = var.server_domain_name
   type     = "CNAME"
   ttl      = 300
 }
