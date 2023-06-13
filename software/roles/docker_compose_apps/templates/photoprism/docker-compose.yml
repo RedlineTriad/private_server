@@ -59,12 +59,12 @@ services:
       PHOTOPRISM_JPEG_QUALITY: 85                    # a higher value increases the quality and file size of JPEG images and thumbnails (25-100)
       PHOTOPRISM_DETECT_NSFW: "false"                # automatically flags photos as private that MAY be offensive (requires TensorFlow)
       PHOTOPRISM_UPLOAD_NSFW: "true"                 # allows uploads that MAY be offensive (no effect without TensorFlow)
-      # PHOTOPRISM_DATABASE_DRIVER: "sqlite"         # SQLite is an embedded database that doesn't require a server
-      PHOTOPRISM_DATABASE_DRIVER: "postgres"            # use MariaDB 10.5+ or MySQL 8+ instead of SQLite for improved performance
-      PHOTOPRISM_DATABASE_SERVER: "postgres:3306"     # MariaDB or MySQL database server (hostname:port)
-      PHOTOPRISM_DATABASE_NAME: "photoprism"         # MariaDB or MySQL database schema name
-      PHOTOPRISM_DATABASE_USER: "photoprism"         # MariaDB or MySQL database user name
-      PHOTOPRISM_DATABASE_PASSWORD: ${PHOTOPRISM_STORAGE_POSTGRES_PASSWORD}       # MariaDB or MySQL database user password
+      PHOTOPRISM_DATABASE_DRIVER: "sqlite"         # SQLite is an embedded database that doesn't require a server
+      # PHOTOPRISM_DATABASE_DRIVER: "mysql"            # use MariaDB 10.5+ or MySQL 8+ instead of SQLite for improved performance
+      # PHOTOPRISM_DATABASE_SERVER: "mariadb:3306"     # MariaDB or MySQL database server (hostname:port)
+      # PHOTOPRISM_DATABASE_NAME: "photoprism"         # MariaDB or MySQL database schema name
+      # PHOTOPRISM_DATABASE_USER: "photoprism"         # MariaDB or MySQL database user name
+      # PHOTOPRISM_DATABASE_PASSWORD: "insecure"       # MariaDB or MySQL database user password      PHOTOPRISM_SITE_CAPTION: "AI-Powered Photos App"
       PHOTOPRISM_SITE_CAPTION: "AI-Powered Photos App"
       PHOTOPRISM_SITE_DESCRIPTION: ""                # meta site description
       PHOTOPRISM_SITE_AUTHOR: ""                     # meta site author
@@ -92,6 +92,8 @@ services:
     #  - "/dev/video11:/dev/video11"                 # Video4Linux Video Encode Device (h264_v4l2m2m)
     working_dir: "/photoprism" # do not change or remove
     ## Storage Folders: "~" is a shortcut for your home directory, "." for the current directory
+    tmpfs:
+      - /tmp
     volumes:
       # "/host/folder:/photoprism/folder"                # Example
       - "photo_originals:/photoprism/originals"               # Original media files (DO NOT REMOVE)
@@ -107,21 +109,6 @@ services:
       - traefik.http.routers.photoprism.entrypoints=https
       - traefik.http.routers.photoprism.tls.certResolver=letsencrypt
       - traefik.http.routers.photoprism.middlewares=authelia@docker
-
-  db:
-    image: postgres:15.1-alpine3.16
-    restart: unless-stopped
-    read_only: true
-    environment:
-      POSTGRES_DB: photoprism
-      POSTGRES_USER: photoprism
-      POSTGRES_PASSWORD: ${PHOTOPRISM_STORAGE_POSTGRES_PASSWORD}
-    volumes:
-      - db_data:/var/lib/postgresql/data
-    tmpfs:
-      - /run
-    networks:
-      - internal
 
 volumes:
   photo_originals:
