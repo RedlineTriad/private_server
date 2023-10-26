@@ -3,7 +3,7 @@ version: '3'
 
 services:
   lldap:
-    image: nitnelave/lldap:latest-alpine
+    image: ghcr.io/lldap/lldap:2023-10-26-alpine
     entrypoint: /app/lldap
     command: ["run", "--config-file", "/etc/lldap_config.toml"]
     healthcheck:
