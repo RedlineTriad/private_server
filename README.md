@@ -1,5 +1,52 @@
 My entire private server as code including testing
 
+
+```mermaid
+graph LR
+web[Public Internet]
+web-- https --> traefik
+letsencrypt[Lets Encrypt]
+traefik-- http <--> letsencrypt
+
+subgraph Private Server
+traefik[Traefik]
+photoprism[Photoprism]
+grocy[Grocy]
+
+traefik-- http --> authelia
+traefik-- http --> grocy
+traefik-- http --> photoprism
+traefik-- http --> grafana
+traefik-- http --> lldap
+traefik-- otlp --> otel
+
+subgraph Auth
+authelia[Authelia]
+lldap[LLDAP]
+
+authelia-- ldap --> lldap
+end
+
+subgraph Observability
+grafana[Grafana]
+loki[Loki]
+tempo[Tempo]
+otel[OTEL Collector]
+
+otel-- otlp --> loki
+otel-- http --> prometheus
+otel-- otlp --> tempo
+grafana-- http --> loki
+grafana-- http --> prometheus
+grafana-- http --> tempo
+grafana-- otlp --> otel
+tempo-- otlp --> otel
+loki-- otlp --> otel
+end
+end
+```
+
+
 ```mermaid
 C4Context
 title System Context Diagram for my Private Server
@@ -21,29 +68,4 @@ Rel(porkbun, cloudflare, "Specifies Authoritative Domain Server")
 Rel(cloudflare, server, "Tell client to connect to")
 
 Rel(developer, github, "Changes.")
-```
-
-```mermaid
-C4Container
-title Container Diagram for my Private Server
-
-Person(developer, "Redline", "A Developer with Yak Shaving Syndrome.")
-
-
-System_Boundary(server, "Private Server") {
-    System(caddy, "Caddy", "Reverse Proxy.")
-    System(grocy, "Grocy", "And ERP for your Fridge.")
-    System(valetudo, "Valetudo", "Open-Source Robovacuum Server.")
-    System(paperlessngx, "PaperlessNGX", "Document Scanning/Storage/Indexing.")
-    System(homeassistant, "Home Assistant", "Smart Home Server.")
-
-    Rel(caddy, grocy, "http")
-    Rel(caddy, valetudo, "http")
-    Rel(caddy, paperlessngx, "http")
-    Rel(caddy, homeassistant, "http")
-
-    Rel(homeassistant, valetudo, "controls")
-}
-
-Rel(developer, caddy, "http")
 ```
