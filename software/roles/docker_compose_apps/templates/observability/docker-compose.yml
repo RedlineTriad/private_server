@@ -83,7 +83,7 @@ services:
       - observability
 
   promtail:
-    image: grafana/promtail:2.9.3
+    image: grafana/promtail:2.9.4
     command: -config.file=/etc/promtail/config.yaml
     restart: unless-stopped
     read_only: true
