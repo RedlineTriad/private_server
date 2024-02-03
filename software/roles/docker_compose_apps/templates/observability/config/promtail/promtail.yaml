@@ -12,18 +12,19 @@ clients:
 scrape_configs:
   - job_name: journal
     journal:
-      json: true
+      json: false
+      path: /var/log/journal
       labels:
         job: systemd-journal
     relabel_configs:
-      - source_labels: ['__journal__systemd_unit']
-        target_label: 'unit'
-
-      - source_labels: ['unit']
-        regex: 'session-\d+.scope'
-        replacement: 'session-NNN.scope'
-        target_label: unit
-
+      - source_labels: ["__journal__systemd_unit"]
+        target_label: "unit"
+      - source_labels: ["__journal__hostname"]
+        target_label: host
+      - source_labels: ["__journal_priority_keyword"]
+        target_label: level
+      - source_labels: ["__journal_syslog_identifier"]
+        target_label: syslog_identifier
 
   - job_name: containers
     static_configs:
