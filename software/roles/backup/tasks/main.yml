@@ -29,7 +29,7 @@
       keep_monthly: 6
     borgmatic_timer: systemd
     borgmatic_timer_hour: '*'
-    borgmatic_timer_minute: 0
+    borgmatic_timer_minute: '0/5'
 
 - name: Check if repository already exists
   ansible.builtin.command:
