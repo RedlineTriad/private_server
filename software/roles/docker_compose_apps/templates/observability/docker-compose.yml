@@ -25,7 +25,7 @@ services:
       - rproxy
 
   tempo:
-    image: grafana/tempo:2.3.1
+    image: grafana/tempo:2.4.0
     command: [ "-config.file=/etc/tempo.yaml" ]
     restart: unless-stopped
     volumes:
