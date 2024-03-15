@@ -72,7 +72,7 @@ services:
       - internal
 
   otel-collector:
-    image: otel/opentelemetry-collector-contrib:0.95.0
+    image: otel/opentelemetry-collector-contrib:0.96.0
     command: [ "--config=/etc/otel-collector.yaml" ]
     restart: unless-stopped
     read_only: true
