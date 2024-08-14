@@ -1,7 +1,12 @@
 ---
 collections:
   - name: community.general
+    version: "9.3.0"
   - name: community.docker
+    version: "3.12.1"
 
 roles:
   - name: borgbase.ansible_role_borgbackup
+    src: git+https://github.com/borgbase/ansible-role-borgbackup.git
+    version: 0e5e8766264233788eeb0abb1d48e854cedcf7aa
+
