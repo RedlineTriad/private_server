@@ -9,7 +9,7 @@ resource "cloudflare_zone" "personal_domain" {
 resource "cloudflare_record" "a" {
   zone_id = cloudflare_zone.personal_domain.id
   name    = var.server_domain_name
-  value   = hcloud_server.web.ipv4_address
+  content = hcloud_server.web.ipv4_address
   type    = "A"
   ttl     = 300
 }
@@ -17,7 +17,7 @@ resource "cloudflare_record" "a" {
 resource "cloudflare_record" "aaaa" {
   zone_id = cloudflare_zone.personal_domain.id
   name    = var.server_domain_name
-  value   = hcloud_server.web.ipv6_address
+  content = hcloud_server.web.ipv6_address
   type    = "AAAA"
   ttl     = 300
 }
@@ -34,7 +34,7 @@ resource "cloudflare_record" "aliases" {
   for_each = toset(local.subdomains)
   zone_id  = cloudflare_zone.personal_domain.id
   name     = each.key
-  value    = var.server_domain_name
+  content  = var.server_domain_name
   type     = "CNAME"
   ttl      = 300
 }
