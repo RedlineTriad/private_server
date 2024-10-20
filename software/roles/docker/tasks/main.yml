@@ -7,15 +7,7 @@
 - name: Install required system packages
   ansible.builtin.apt:
     pkg:
-      - ca-certificates
-      - curl
       - gnupg
-      - lsb-release
-      - apt-transport-https
-      - software-properties-common
-      - python3-pip
-      - virtualenv
-      - python3-setuptools
     state: present
 
 - name: Add Docker GPG apt Key
@@ -25,7 +17,7 @@
 
 - name: Add Docker Repository
   ansible.builtin.apt_repository:
-    repo: deb https://download.docker.com/linux/debian bullseye stable
+    repo: deb https://download.docker.com/linux/debian bookworm stable
     state: present
 
 - name: Create Docker Directory
@@ -60,13 +52,7 @@
       - docker-ce
       - docker-ce-cli
       - containerd.io
+      - docker-buildx-plugin
       - docker-compose-plugin
     state: present
     update_cache: true
-
-- name: Install Docker Module for Python
-  ansible.builtin.pip:
-    name:
-      - docker
-      - docker-compose
-    state: present
