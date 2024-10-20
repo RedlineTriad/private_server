@@ -29,23 +29,23 @@ providers:
     exposedByDefault: false
     network: rproxy
 
-tracing:
-  openTelemetry:
-    address: http://otel-collector:4317
-    insecure: true
-    grpc: {}
+# tracing:
+#   openTelemetry:
+#     address: http://otel-collector:4317
+#     insecure: true
+#     grpc: {}
 
-log:
-  format: json
+# log:
+#   format: json
 
-metrics:
-  openTelemetry:
-    address: otel-collector:4317
-    insecure: true
-    grpc: {}
-    addEntryPointsLabels: true
-    addRoutersLabels: true
-    addServicesLabels: true
+# metrics:
+#   openTelemetry:
+#     address: otel-collector:4317
+#     insecure: true
+#     grpc: {}
+#     addEntryPointsLabels: true
+#     addRoutersLabels: true
+#     addServicesLabels: true
 
 api:
   dashboard: true
